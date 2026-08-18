@@ -1,0 +1,236 @@
+.blogPage {
+  background: var(--color-background);
+  min-height: 100vh;
+  padding-bottom: 60px;
+}
+
+/* ── Hero ── */
+.blogHero {
+  background: linear-gradient(135deg, #3A4831 0%, #4A5C3F 50%, #5B6A4A 100%);
+  padding: 60px 24px 50px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.blogHero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.heroBadge {
+  display: inline-block;
+  background: rgba(255,255,255,0.15);
+  color: #a8d878;
+  padding: 5px 16px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: 1px solid rgba(255,255,255,0.25);
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+}
+
+.heroTitle {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 14px;
+  letter-spacing: -0.5px;
+}
+
+.heroSubtitle {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.82);
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.55;
+}
+
+/* ── Filter Row ── */
+.filterRow {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 28px 24px 16px;
+}
+
+.filterBtn {
+  padding: 8px 18px;
+  border-radius: 50px;
+  border: 1.5px solid var(--color-border, #ddd);
+  background: transparent;
+  color: var(--color-text, #333);
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.filterBtn:hover {
+  border-color: #4A5C3F;
+  color: #4A5C3F;
+  background: rgba(74, 92, 63, 0.06);
+}
+
+.filterActive {
+  background: #4A5C3F !important;
+  color: #fff !important;
+  border-color: #4A5C3F !important;
+}
+
+/* ── Post Grid ── */
+.postGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px 24px 0;
+}
+
+.postCard {
+  background: var(--color-surface, #fff);
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--color-border, #eee);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.postCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px rgba(58, 72, 49, 0.14);
+  border-color: rgba(74, 92, 63, 0.3);
+}
+
+/* Cover */
+.cardCover {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #3A4831, #5B6A4A);
+  flex-shrink: 0;
+}
+
+.coverImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.coverPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+  opacity: 0.4;
+}
+
+.categoryBadge {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  backdrop-filter: blur(8px);
+}
+
+/* Card Body */
+.cardBody {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.cardTitle {
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.cardSummary {
+  font-size: 0.86rem;
+  color: var(--color-text-muted, #666);
+  line-height: 1.5;
+  margin: 0;
+  flex: 1;
+}
+
+.cardMeta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 0.78rem;
+  color: var(--color-text-muted, #888);
+  margin-top: 4px;
+}
+
+.tag {
+  display: inline-block;
+  background: rgba(74, 92, 63, 0.1);
+  color: #4A5C3F;
+  padding: 2px 10px;
+  border-radius: 50px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  margin: 2px 2px 0 0;
+}
+
+/* Empty State */
+.emptyState {
+  text-align: center;
+  padding: 60px 24px;
+  color: var(--color-text-muted, #999);
+}
+
+.emptyState p {
+  margin-top: 12px;
+  font-size: 1rem;
+}
+
+/* ── Mobile Responsive ── */
+@media (max-width: 768px) {
+  .blogHero {
+    padding: 40px 16px 30px;
+  }
+  .heroTitle {
+    font-size: clamp(1.8rem, 6vw, 2.2rem);
+  }
+  .filterRow {
+    padding: 20px 16px 10px;
+  }
+  .postGrid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    padding: 16px 16px 0;
+  }
+}
+@media (max-width: 480px) {
+  .postGrid {
+    grid-template-columns: 1fr; /* Full width cards on small phones */
+  }
+  .cardCover {
+    height: 180px;
+  }
+}

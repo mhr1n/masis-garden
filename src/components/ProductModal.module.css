@@ -1,0 +1,408 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 40, 30, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  animation: fadeIn 0.25s ease;
+}
+
+.modal {
+  background: var(--color-surface);
+  border-radius: var(--radius-xl);
+  width: 100%;
+  max-width: 920px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: scaleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+  box-shadow: var(--shadow-xl);
+}
+
+.closeBtn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--color-surface-warm);
+  color: var(--color-text-light);
+  z-index: 10;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+.closeBtn:hover {
+  background: var(--color-primary);
+  color: white;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 700px) {
+  .grid { grid-template-columns: 1fr; }
+}
+
+/* Left column */
+.imageCol {
+  background: var(--color-surface-warm);
+  border-radius: var(--radius-xl) 0 0 var(--radius-xl);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.mainImageArea {
+  position: relative;
+  width: 100%;
+  height: 440px;
+  flex-shrink: 0;
+  background: var(--color-surface-warm);
+  overflow: hidden;
+}
+.imagePlaceholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(145deg, #C5D4BB 0%, #A0B890 45%, #7A9865 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.imageLabel {
+  color: white;
+  font-weight: bold;
+  opacity: 0.7;
+}
+.mainImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Image Navigation Arrows (Glassmorphism) */
+.navBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 5;
+}
+.navBtn:hover {
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--color-primary-dark);
+  border-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 10px 36px 0 rgba(0, 0, 0, 0.22), inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+  transform: translateY(-50%) scale(1.1);
+}
+.navBtn:active {
+  transform: translateY(-50%) scale(0.95);
+}
+.prevBtn {
+  left: 14px;
+}
+.nextBtn {
+  right: 14px;
+}
+.thumbnailList {
+  display: flex;
+  gap: 8px;
+  padding: 12px 18px;
+  background: white;
+  border-top: 1px solid var(--color-border-light);
+  overflow-x: auto;
+}
+.thumbnailBtn {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  cursor: pointer;
+  padding: 0;
+  background: none;
+}
+.thumbnailActive {
+  border-color: var(--color-primary);
+}
+.thumbnailImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.shippingBadges {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px 18px;
+  background: white;
+  border-top: 1px solid var(--color-border-light);
+}
+.shippingBadges span {
+  font-size: 0.8rem;
+  color: var(--color-text-light);
+}
+
+/* Right column */
+.infoCol {
+  padding: 36px 36px 36px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow-y: auto;
+}
+
+@media (max-width: 700px) {
+  .imageCol { border-radius: var(--radius-xl) var(--radius-xl) 0 0; }
+  .mainImageArea { height: 320px; }
+  .infoCol { padding: 24px; }
+}
+
+.botanical {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+.armenian {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+.name {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+}
+.price {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--color-secondary);
+}
+
+.tagRow {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.modalTag {
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--color-surface-warm);
+  color: var(--color-primary);
+  border: 1px solid var(--color-border);
+}
+
+.description {
+  font-size: 0.95rem;
+  color: var(--color-text-light);
+  line-height: 1.75;
+}
+
+/* Care Icons Grid */
+.careGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.careCard {
+  background: var(--color-surface-warm);
+  border-radius: var(--radius-md);
+  padding: 12px 10px;
+  text-align: center;
+  border: 1px solid var(--color-border-light);
+}
+.careIcon {
+  font-size: 1.5rem;
+  display: block;
+  margin-bottom: 4px;
+}
+.careKey {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+.careVal {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+/* Specs */
+.specs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
+  background: var(--color-surface-warm);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-light);
+}
+.spec {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.88rem;
+}
+.spec span { color: var(--color-text-light); }
+.spec strong { color: var(--color-text); font-weight: 600; }
+
+/* Option groups */
+.optionGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.optionGroup label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.optionPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.optionPill {
+  padding: 7px 16px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--color-border);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text);
+  transition: all var(--transition-fast);
+}
+.optionPill:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+.optionPillActive {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+}
+
+/* Add to Cart button */
+.addBtn {
+  width: 100%;
+  padding: 15px;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: var(--radius-md) !important;
+  transition: all var(--transition-fast) !important;
+}
+.addBtnSuccess {
+  background: #3D7A45 !important;
+}
+
+/* Care Tips */
+.careTips h4 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+.careTips ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.careTips li {
+  font-size: 0.88rem;
+  color: var(--color-text-light);
+  padding-left: 16px;
+  position: relative;
+}
+.careTips li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+  font-weight: bold;
+}
+
+/* Features */
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.feature {
+  font-size: 0.82rem;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  background: #E8F0E2;
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* ── Mobile Responsive ── */
+@media (max-width: 480px) {
+  .modal {
+    max-height: 100vh;
+    border-radius: 0;
+    height: 100vh;
+  }
+  .imageCol {
+    border-radius: 0;
+  }
+  .mainImageArea {
+    height: 260px;
+  }
+  .infoCol {
+    padding: 16px 16px 80px; /* space for sticky add button */
+    gap: 12px;
+  }
+  .name {
+    font-size: 1.6rem;
+  }
+  .price {
+    font-size: 1.3rem;
+  }
+  .closeBtn {
+    top: 10px;
+    right: 10px;
+    background: rgba(255,255,255,0.8);
+  }
+  /* Optional: Make add button sticky on mobile */
+  .addBtn {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    width: calc(100% - 32px);
+    z-index: 10;
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
+  }
+}
