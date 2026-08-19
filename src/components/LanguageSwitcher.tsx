@@ -46,7 +46,12 @@ const LOCALE_DATA: Record<Locale, { label: string; icon: ReactNode }> = {
   ru: { label: 'Русский', icon: <RussiaFlag /> },
 };
 
-export default function LanguageSwitcher({ currentLang }: { currentLang: Locale }) {
+interface LanguageSwitcherProps {
+  currentLang: Locale;
+  direction?: 'up' | 'down';
+}
+
+export default function LanguageSwitcher({ currentLang, direction = 'down' }: LanguageSwitcherProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
@@ -97,7 +102,7 @@ export default function LanguageSwitcher({ currentLang }: { currentLang: Locale 
       </button>
 
       {isOpen && (
-        <div className={styles.glassMenu}>
+        <div className={`${styles.glassMenu} ${direction === 'up' ? styles.menuUp : ''}`}>
           {i18n.locales.map((locale) => {
             const loc = LOCALE_DATA[locale as Locale];
             const isActive = locale === currentLang;

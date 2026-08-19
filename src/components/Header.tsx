@@ -108,7 +108,7 @@ export default function Header({ lang, dict }: { lang: Locale; dict: any }) {
 
         {/* Bottom actions */}
         <div className={styles.overlayFooter}>
-          <LanguageSwitcher currentLang={lang} />
+          <LanguageSwitcher currentLang={lang} direction="up" />
           <button
             className={styles.overlayCartBtn}
             onClick={() => { setMenuOpen(false); setIsCartOpen(true); }}

@@ -10,7 +10,7 @@ import type { Product, ProductType } from '../../../data/products';
 export default function ProductForm({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
   const isNew = resolvedParams.id === 'new';
-  const { products, addProduct, updateProduct } = useProducts();
+  const { products, addProduct, updateProduct, uploadImage } = useProducts();
   const { categories } = useCategories();
   const router = useRouter();
 
@@ -83,45 +83,22 @@ export default function ProductForm({ params }: { params: Promise<{ id: string }
     imgs.splice(index, 1);
     setForm(prev => ({ ...prev, images: imgs }));
   };
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const rawUrl = event.target?.result as string;
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const MAX_SIZE = 800;
-        let width = img.width;
-        let height = img.height;
-        if (width > height) {
-          if (width > MAX_SIZE) {
-            height *= MAX_SIZE / width;
-            width = MAX_SIZE;
-          }
-        } else {
-          if (height > MAX_SIZE) {
-            width *= MAX_SIZE / height;
-            height = MAX_SIZE;
-          }
-        }
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext('2d');
-        ctx?.drawImage(img, 0, 0, width, height);
-        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.85);
-
-        // Prepend uploaded image as the main cover photo (index 0)
-        setForm((prev) => ({
-          ...prev,
-          images: [compressedBase64, ...(prev.images || [])],
-        }));
-      };
-      img.src = rawUrl;
-    };
-    reader.readAsDataURL(file);
+    // Use a placeholder or loading state if needed, but for simplicity we'll just wait
+    // Ideally we would set a loading state here.
+    const url = await uploadImage(file);
+    if (url) {
+      setForm((prev) => ({
+        ...prev,
+        images: [url, ...(prev.images || [])],
+      }));
+    } else {
+      alert("Failed to upload image. Please check your Supabase Storage settings.");
+    }
+    
     e.target.value = '';
   };
 

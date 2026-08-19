@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { supabase } from '../lib/supabase';
 
 export interface ChatMessage {
   id: string;
@@ -17,13 +18,11 @@ export interface Ticket {
   updatedAt: number;
 }
 
-const STORAGE_KEY = 'ariel_tickets_v1';
-
 interface TicketsContextType {
   tickets: Ticket[];
-  addTicket: (userPhone: string, message: string) => void;
-  replyToTicket: (id: string, reply: string) => void;
-  closeTicket: (id: string) => void;
+  addTicket: (userPhone: string, message: string) => Promise<void>;
+  replyToTicket: (id: string, reply: string) => Promise<void>;
+  closeTicket: (id: string) => Promise<void>;
 }
 
 const TicketsContext = createContext<TicketsContextType | undefined>(undefined);
@@ -31,47 +30,55 @@ const TicketsContext = createContext<TicketsContextType | undefined>(undefined);
 export function TicketsProvider({ children }: { children: ReactNode }) {
   const [tickets, setTickets] = useState<Ticket[]>([]);
 
-  useEffect(() => {
-    const loadFromStorage = () => {
-      try {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) {
-          const parsed = JSON.parse(stored);
-          const migrated = parsed.map((t: any) => {
-            if (!t.messages) {
-              const msgs: ChatMessage[] = [
-                { id: `msg_${t.createdAt}`, sender: 'user', text: t.message, createdAt: t.createdAt }
-              ];
-              if (t.adminReply) {
-                msgs.push({ id: `msg_${t.createdAt}_reply`, sender: 'admin', text: t.adminReply, createdAt: t.createdAt + 1000 });
-              }
-              return { ...t, messages: msgs, updatedAt: t.createdAt };
-            }
-            return t;
-          });
-          setTickets(migrated);
-        }
-      } catch {}
-    };
+  const loadTickets = async () => {
+    try {
+      const { data, error } = await supabase.from('tickets').select('*').order('created_at', { ascending: false });
+      if (error) throw error;
 
-    loadFromStorage();
+      if (data) {
+        const formatted: Ticket[] = data.map(item => {
+          let parsedMessages: ChatMessage[] = [];
+          try {
+            parsedMessages = JSON.parse(item.message);
+            if (!Array.isArray(parsedMessages)) throw new Error('Not array');
+          } catch {
+            // Fallback for old schema
+            parsedMessages = [
+              { id: `msg_${item.created_at}`, sender: 'user', text: item.message, createdAt: new Date(item.created_at).getTime() }
+            ];
+          }
 
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === STORAGE_KEY) {
-        loadFromStorage();
+          return {
+            id: item.id,
+            userPhone: item.phone || item.customer_name || 'Unknown',
+            messages: parsedMessages,
+            status: (item.status as 'open' | 'closed') || 'open',
+            updatedAt: new Date(item.created_at).getTime(),
+          };
+        });
+        setTickets(formatted);
       }
-    };
-    
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
-  }, []);
-
-  const persist = (next: Ticket[]) => {
-    setTickets(next);
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); } catch {}
+    } catch (err) {
+      console.error('Failed to load tickets from Supabase', err);
+    }
   };
 
-  const addTicket = (userPhone: string, message: string) => {
+  useEffect(() => {
+    loadTickets();
+
+    const channel = supabase
+      .channel('public:tickets')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'tickets' }, () => {
+        loadTickets();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  const addTicket = async (userPhone: string, message: string) => {
     const newMessage: ChatMessage = {
       id: `msg_${Date.now()}`,
       sender: 'user',
@@ -82,39 +89,59 @@ export function TicketsProvider({ children }: { children: ReactNode }) {
     const existingOpenIndex = tickets.findIndex(t => t.userPhone === userPhone && t.status === 'open');
 
     if (existingOpenIndex >= 0) {
-      // Append to existing open ticket
-      const newTickets = [...tickets];
-      newTickets[existingOpenIndex] = {
-        ...newTickets[existingOpenIndex],
-        messages: [...newTickets[existingOpenIndex].messages, newMessage],
-        updatedAt: Date.now()
-      };
-      persist(newTickets);
+      // Append to existing ticket
+      const ticket = tickets[existingOpenIndex];
+      const newMessages = [...ticket.messages, newMessage];
+      setTickets(prev => prev.map((t, i) => i === existingOpenIndex ? { ...t, messages: newMessages, updatedAt: Date.now() } : t));
+      
+      await supabase.from('tickets').update({
+        message: JSON.stringify(newMessages)
+      }).eq('id', ticket.id);
     } else {
       // Create new ticket
       const newTicket: Ticket = {
-        id: `ticket_${Date.now()}`,
+        id: `TKT-${Date.now()}`,
         userPhone,
         messages: [newMessage],
         status: 'open',
         updatedAt: Date.now(),
       };
-      persist([...tickets, newTicket]);
+      setTickets(prev => [newTicket, ...prev]);
+
+      const row = {
+        id: newTicket.id,
+        customer_name: userPhone,
+        phone: userPhone,
+        subject: 'Support Chat',
+        message: JSON.stringify(newTicket.messages),
+        status: 'open',
+      };
+      await supabase.from('tickets').insert([row]);
     }
   };
 
-  const replyToTicket = (id: string, reply: string) => {
+  const replyToTicket = async (id: string, reply: string) => {
+    const ticket = tickets.find(t => t.id === id);
+    if (!ticket) return;
+
     const newMessage: ChatMessage = {
       id: `msg_${Date.now()}`,
       sender: 'admin',
       text: reply,
       createdAt: Date.now()
     };
-    persist(tickets.map(t => t.id === id ? { ...t, messages: [...t.messages, newMessage], updatedAt: Date.now() } : t));
+    const newMessages = [...ticket.messages, newMessage];
+    
+    setTickets(prev => prev.map(t => t.id === id ? { ...t, messages: newMessages, updatedAt: Date.now() } : t));
+    
+    await supabase.from('tickets').update({
+      message: JSON.stringify(newMessages)
+    }).eq('id', id);
   };
 
-  const closeTicket = (id: string) => {
-    persist(tickets.map(t => t.id === id ? { ...t, status: 'closed' } : t));
+  const closeTicket = async (id: string) => {
+    setTickets(prev => prev.map(t => t.id === id ? { ...t, status: 'closed' } : t));
+    await supabase.from('tickets').update({ status: 'closed' }).eq('id', id);
   };
 
   return (

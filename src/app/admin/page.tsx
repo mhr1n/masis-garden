@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useProducts } from '../../context/ProductsContext';
 
 export default function AdminDashboard() {
-  const { products, deleteProduct, resetToDefaults } = useProducts();
+  const { products, deleteProduct } = useProducts();
   const [filter, setFilter] = useState<'all' | 'plant' | 'pot' | 'moss'>('all');
 
   const filtered = products.filter(p => filter === 'all' || p.type === filter);
@@ -23,12 +23,6 @@ export default function AdminDashboard() {
     }
   };
 
-  const confirmReset = () => {
-    if (confirm(`WARNING: This will delete all custom products and reset to defaults. Are you sure?`)) {
-      resetToDefaults();
-    }
-  };
-
   return (
     <div>
       <div className="admin-topbar">
@@ -37,9 +31,6 @@ export default function AdminDashboard() {
           <p>Manage your store catalogue and inventory</p>
         </div>
         <div style={{ display: 'flex', gap: '10px' }}>
-          <button className="btn-cancel-admin" onClick={confirmReset} style={{ color: '#cc6666', borderColor: '#4d2020' }}>
-            Reset to Defaults
-          </button>
           <Link href="/admin/new" className="btn-primary-admin">
             ➕ Add Product
           </Link>
