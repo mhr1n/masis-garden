@@ -114,7 +114,7 @@ export default function SupportWidget() {
                         })}
                         {ticket.status === 'open' && (ticket.messages || []).length > 0 && ticket.messages[ticket.messages.length - 1].sender === 'user' && (
                           <div style={{ fontSize: '0.75rem', color: '#888', alignSelf: 'flex-end', marginRight: '6px', fontStyle: 'italic' }}>
-                            Sending...
+                            Delivered ✔
                           </div>
                         )}
                         {ticket.status === 'closed' && (
