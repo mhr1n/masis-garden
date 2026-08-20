@@ -1,53 +1,47 @@
 .blogPage {
-  background: var(--color-background);
+  background: #0d120c;
   min-height: 100vh;
-  padding-bottom: 60px;
+  padding-bottom: 100px;
 }
 
-/* ── Hero ── */
+/* ── Hero Banner ── */
 .blogHero {
-  background: linear-gradient(135deg, #3A4831 0%, #4A5C3F 50%, #5B6A4A 100%);
-  padding: 60px 24px 50px;
+  background: #0d120c;
+  padding: 90px 24px 50px;
   text-align: center;
   position: relative;
-  overflow: hidden;
-}
-
-.blogHero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.06) 0%, transparent 60%);
-  pointer-events: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .heroBadge {
   display: inline-block;
-  background: rgba(255,255,255,0.15);
-  color: #a8d878;
-  padding: 5px 16px;
+  background: rgba(143, 188, 106, 0.08);
+  color: #8fbc6a;
+  padding: 6px 18px;
   border-radius: 50px;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  border: 1px solid rgba(255,255,255,0.25);
-  margin-bottom: 16px;
-  letter-spacing: 0.5px;
+  border: 1px solid rgba(143, 188, 106, 0.2);
+  margin-bottom: 18px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .heroTitle {
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(2.2rem, 6vw, 3.4rem);
   font-weight: 800;
   color: #fff;
-  margin: 0 0 14px;
-  letter-spacing: -0.5px;
+  margin: 0 0 16px;
+  letter-spacing: -1px;
+  line-height: 1.15;
 }
 
 .heroSubtitle {
-  font-size: 1rem;
-  color: rgba(255,255,255,0.82);
-  max-width: 560px;
+  font-size: 0.98rem;
+  color: #8a9c85;
+  max-width: 580px;
   margin: 0 auto;
-  line-height: 1.55;
+  line-height: 1.6;
 }
 
 /* ── Filter Row ── */
@@ -55,16 +49,16 @@
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 10px;
-  padding: 28px 24px 16px;
+  gap: 8px;
+  padding: 32px 24px 24px;
 }
 
 .filterBtn {
   padding: 8px 18px;
   border-radius: 50px;
-  border: 1.5px solid var(--color-border, #ddd);
-  background: transparent;
-  color: var(--color-text, #333);
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  color: #8a9c85;
   font-size: 0.84rem;
   font-weight: 600;
   cursor: pointer;
@@ -73,52 +67,53 @@
 }
 
 .filterBtn:hover {
-  border-color: #4A5C3F;
-  color: #4A5C3F;
-  background: rgba(74, 92, 63, 0.06);
+  border-color: #8fbc6a;
+  color: #e8eee5;
+  background: rgba(143, 188, 106, 0.05);
 }
 
 .filterActive {
-  background: #4A5C3F !important;
-  color: #fff !important;
-  border-color: #4A5C3F !important;
+  background: #243422 !important;
+  color: #8fbc6a !important;
+  border-color: #4a5c3f !important;
+  box-shadow: 0 4px 15px rgba(36, 52, 34, 0.4);
 }
 
 /* ── Post Grid ── */
 .postGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 24px;
-  max-width: 1100px;
+  gap: 28px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 16px 24px 0;
 }
 
 .postCard {
-  background: var(--color-surface, #fff);
+  background: #141a13;
   border-radius: 20px;
   overflow: hidden;
-  border: 1px solid var(--color-border, #eee);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   text-decoration: none;
   color: inherit;
-  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
 }
 
 .postCard:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 16px 40px rgba(58, 72, 49, 0.14);
-  border-color: rgba(74, 92, 63, 0.3);
+  transform: translateY(-4px);
+  border-color: rgba(143, 188, 106, 0.3);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
 }
 
 /* Cover */
 .cardCover {
   position: relative;
-  height: 200px;
+  height: 220px;
   overflow: hidden;
-  background: linear-gradient(135deg, #3A4831, #5B6A4A);
+  background: #1e281c;
   flex-shrink: 0;
 }
 
@@ -127,6 +122,11 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.4s ease;
+}
+
+.postCard:hover .coverImg {
+  transform: scale(1.04);
 }
 
 .coverPlaceholder {
@@ -136,43 +136,45 @@
   align-items: center;
   justify-content: center;
   font-size: 3.5rem;
-  opacity: 0.4;
+  opacity: 0.2;
 }
 
 .categoryBadge {
   position: absolute;
-  bottom: 12px;
-  left: 12px;
+  bottom: 14px;
+  left: 14px;
   color: #fff;
-  padding: 4px 12px;
+  padding: 4px 14px;
   border-radius: 50px;
   font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.5px;
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 /* Card Body */
 .cardBody {
-  padding: 20px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   flex: 1;
 }
 
 .cardTitle {
-  font-size: 1.08rem;
+  font-size: 1.15rem;
   font-weight: 700;
-  color: var(--color-text);
+  color: #fff;
   margin: 0;
-  line-height: 1.3;
+  line-height: 1.35;
 }
 
 .cardSummary {
-  font-size: 0.86rem;
-  color: var(--color-text-muted, #666);
-  line-height: 1.5;
+  font-size: 0.88rem;
+  color: #8a9c85;
+  line-height: 1.6;
   margin: 0;
   flex: 1;
 }
@@ -182,26 +184,29 @@
   gap: 12px;
   align-items: center;
   font-size: 0.78rem;
-  color: var(--color-text-muted, #888);
-  margin-top: 4px;
+  color: #6a7a65;
+  margin-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  padding-top: 12px;
 }
 
 .tag {
   display: inline-block;
-  background: rgba(74, 92, 63, 0.1);
-  color: #4A5C3F;
-  padding: 2px 10px;
+  background: rgba(143, 188, 106, 0.06);
+  color: #8fbc6a;
+  padding: 3px 12px;
   border-radius: 50px;
   font-size: 0.72rem;
   font-weight: 600;
-  margin: 2px 2px 0 0;
+  border: 1px solid rgba(143, 188, 106, 0.12);
+  margin-top: 4px;
 }
 
 /* Empty State */
 .emptyState {
   text-align: center;
-  padding: 60px 24px;
-  color: var(--color-text-muted, #999);
+  padding: 80px 24px;
+  color: #6a7a65;
 }
 
 .emptyState p {
@@ -209,28 +214,33 @@
   font-size: 1rem;
 }
 
-/* ── Mobile Responsive ── */
+/* Responsive */
 @media (max-width: 768px) {
   .blogHero {
-    padding: 40px 16px 30px;
+    padding: 60px 16px 36px;
   }
   .heroTitle {
-    font-size: clamp(1.8rem, 6vw, 2.2rem);
+    font-size: 2.2rem;
   }
   .filterRow {
-    padding: 20px 16px 10px;
+    padding: 20px 16px 12px;
+    gap: 6px;
+  }
+  .filterBtn {
+    padding: 7px 14px;
+    font-size: 0.8rem;
   }
   .postGrid {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 16px;
+    gap: 20px;
     padding: 16px 16px 0;
   }
 }
 @media (max-width: 480px) {
   .postGrid {
-    grid-template-columns: 1fr; /* Full width cards on small phones */
+    grid-template-columns: 1fr;
   }
   .cardCover {
-    height: 180px;
+    height: 190px;
   }
 }

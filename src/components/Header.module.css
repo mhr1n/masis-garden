@@ -244,10 +244,10 @@
 }
 
 /* ── Responsive ── */
-@media (max-width: 900px) {
+@media (max-width: 768px) {
   .nav { display: none; }
   .badge247 { display: none; }
-  .hamburger { display: flex; }
+  .trackBtn { display: none; }
 }
 
 @media (max-width: 480px) {
