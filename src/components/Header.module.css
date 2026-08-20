@@ -110,35 +110,6 @@
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-/* ── Hamburger ── */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  width: 38px;
-  height: 38px;
-  background: rgba(255,255,255,0.15);
-  border-radius: 10px;
-  border: 1.5px solid rgba(255,255,255,0.3);
-  cursor: pointer;
-  padding: 0;
-  flex-shrink: 0;
-}
-.bar {
-  display: block;
-  width: 18px;
-  height: 2px;
-  background: #fff;
-  border-radius: 2px;
-  transition: transform 0.28s ease, opacity 0.28s ease;
-  transform-origin: center;
-}
-.barTop  { transform: translateY(7px) rotate(45deg); }
-.barMid  { opacity: 0; transform: scaleX(0); }
-.barBot  { transform: translateY(-7px) rotate(-45deg); }
-
 /* ── Mobile Full-Screen Overlay ── */
 .mobileOverlay {
   position: fixed;

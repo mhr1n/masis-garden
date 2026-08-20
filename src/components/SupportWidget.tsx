@@ -23,7 +23,19 @@ export default function SupportWidget() {
   };
 
   return (
-    <div style={{ position: 'fixed', bottom: '24px', right: '24px', zIndex: 9999 }}>
+    <div className="support-widget-container" style={{ position: 'fixed', zIndex: 9999 }}>
+      <style jsx>{`
+        .support-widget-container {
+          bottom: 24px;
+          right: 24px;
+        }
+        @media (max-width: 768px) {
+          .support-widget-container {
+            bottom: 84px;
+            right: 16px;
+          }
+        }
+      `}</style>
       {!isOpen && (
         <button 
           onClick={() => setIsOpen(true)}
