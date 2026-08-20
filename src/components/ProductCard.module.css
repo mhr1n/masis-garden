@@ -7,6 +7,9 @@
   transition: transform var(--transition-normal), box-shadow var(--transition-normal);
   display: flex;
   flex-direction: column;
+  /* Ensure clipping works on all browsers */
+  isolation: isolate;
+  contain: layout;
 }
 .card:hover {
   transform: translateY(-6px);
@@ -19,6 +22,7 @@
   height: 260px;
   background: var(--color-surface-warm);
   overflow: hidden;
+  flex-shrink: 0;
 }
 .imagePlaceholder {
   width: 100%;
