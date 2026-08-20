@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useOrders } from '../../../context/OrdersContext';
+import { useState } from 'react';
+import { useCRM } from '../../../context/CRMContext';
 import { supabase } from '../../../lib/supabase';
 
 interface Campaign {
@@ -13,25 +13,23 @@ interface Campaign {
 }
 
 export default function EmailCampaignsPage() {
-  const { orders } = useOrders();
+  const { customers } = useCRM();
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
   const [promoCode, setPromoCode] = useState('');
   const [promoDiscount, setPromoDiscount] = useState('');
   const [senderName, setSenderName] = useState('Masis Garden Team');
-  const [audience, setAudience] = useState<'all' | 'with_email'>('with_email');
+  const [audience, setAudience] = useState<'all' | 'vip' | 'regular' | 'new'>('all');
   const [sending, setSending] = useState(false);
   const [result, setResult] = useState<{ success: boolean; sent?: number; error?: string } | null>(null);
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [preview, setPreview] = useState(false);
 
-  // Collect unique emails from orders
-  const allEmails = [...new Set(
-    orders
-      .map(o => o.customerInfo?.email)
-      .filter(Boolean)
-      .filter(e => e && e.includes('@'))
-  )];
+  // Filter customers by selected tag (audience), then extract valid emails
+  const validCustomers = customers.filter(c => c.email && c.email.includes('@'));
+  const filteredCustomers = audience === 'all' ? validCustomers : validCustomers.filter(c => c.tag === audience);
+  
+  const allEmails = [...new Set(filteredCustomers.map(c => c.email.trim()))];
 
   const recipientCount = allEmails.length;
 
@@ -248,16 +246,26 @@ export default function EmailCampaignsPage() {
               </div>
 
               {/* Recipient Info */}
-              <div style={{ background: '#1a2018', border: '1px solid #2a3528', borderRadius: '10px', padding: '14px 18px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ background: '#1a2018', border: '1px solid #2a3528', borderRadius: '10px', padding: '14px 18px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
                 <div>
                   <div style={{ color: '#c5d8b3', fontWeight: 700, fontSize: '1rem' }}>📬 {recipientCount} recipients</div>
                   <div style={{ color: '#6a7a65', fontSize: '0.8rem', marginTop: '2px' }}>
-                    Customers who provided their email during checkout
+                    Target Audience:
+                    <select
+                      value={audience}
+                      onChange={e => setAudience(e.target.value as any)}
+                      style={{ marginLeft: '10px', background: '#131810', color: '#c5d8b3', border: '1px solid #3a4f38', borderRadius: '6px', padding: '4px 8px', fontSize: '0.8rem' }}
+                    >
+                      <option value="all">🌐 All Customers</option>
+                      <option value="vip">⭐ VIP Only</option>
+                      <option value="regular">👥 Regular Only</option>
+                      <option value="new">🆕 New Customers Only</option>
+                    </select>
                   </div>
                 </div>
                 {recipientCount === 0 && (
                   <span style={{ color: '#cc8866', fontSize: '0.8rem', background: '#2d1a0e', padding: '4px 10px', borderRadius: '6px' }}>
-                    No emails yet
+                    No emails match
                   </span>
                 )}
               </div>
