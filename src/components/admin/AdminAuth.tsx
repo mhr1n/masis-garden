@@ -103,6 +103,9 @@ export default function AdminAuth({ children }: { children: React.ReactNode }) {
           <Link href="/admin/promos" className={`sidebar-btn ${pathname === '/admin/promos' ? 'active' : ''}`}>
             🎟️ Promos
           </Link>
+          <Link href="/admin/emails" className={`sidebar-btn ${pathname === '/admin/emails' ? 'active' : ''}`}>
+            📧 Email Campaigns
+          </Link>
           
           <div className="sidebar-divider" style={{ margin: '20px 0' }}></div>
           
