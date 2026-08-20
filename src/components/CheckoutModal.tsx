@@ -80,6 +80,7 @@ export default function CheckoutModal({ isOpen, onClose, dict }: CheckoutModalPr
     setLoading(true);
     
     // Save to Supabase orders table
+    const orderId = `ORD-${Date.now()}`;
     await saveOrderToDb({
       customerName: `${form.firstName} ${form.lastName}`,
       email: form.email,
@@ -97,6 +98,29 @@ export default function CheckoutModal({ isOpen, onClose, dict }: CheckoutModalPr
     // Add to local OrdersContext
     const discountData = appliedPromo ? { code: appliedPromo.code, amount: discountAmount } : undefined;
     addOrder(form, items, total, paymentMethod, discountData);
+
+    // Send order confirmation email if email is provided
+    if (form.email?.trim()) {
+      try {
+        await fetch('/api/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            orderId,
+            customerName: `${form.firstName} ${form.lastName}`,
+            email: form.email,
+            items,
+            totalAmount: subtotal,
+            discountAmount,
+            paymentMethod,
+            address: form.address,
+            city: form.city,
+          }),
+        });
+      } catch (emailErr) {
+        console.error('Email send failed:', emailErr);
+      }
+    }
     
     // Empty the cart
     clearCart();
