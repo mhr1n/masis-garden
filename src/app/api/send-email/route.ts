@@ -66,13 +66,51 @@ export async function POST(req: NextRequest) {
           <!-- Greeting -->
           <tr>
             <td style="padding: 36px 40px 24px;">
-              <h2 style="margin: 0 0 12px; color: #1a2018; font-size: 22px; font-weight: 700;">
-                Thank you, ${customerName}! 🎉
+              <h2 style="margin: 0 0 20px; color: #1a2018; font-size: 22px; font-weight: 700;">
+                Բարև, ${customerName}! 🎉
               </h2>
-              <p style="margin: 0; color: #5a6a55; font-size: 15px; line-height: 1.6;">
-                We're thrilled to receive your order. Our team is already preparing your plants with care and love. 
-                You'll be notified once your order is on its way!
-              </p>
+
+              <!-- Armenian -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 14px; background: #f7faf5; border-left: 4px solid #4a5c3f; border-radius: 0 10px 10px 0;">
+                <tr>
+                  <td style="padding: 14px 18px;">
+                    <div style="font-size: 12px; font-weight: 700; color: #4a5c3f; margin-bottom: 6px; letter-spacing: 0.5px;">🇦🇲 ՀԱՅԵՐԵՆ</div>
+                    <p style="margin: 0; color: #2d3d26; font-size: 14px; line-height: 1.7;">
+                      Շնորհակալություն Ձեր պատվերի համար, ${customerName}! 🌿<br/>
+                      Մենք արդեն սկսել ենք պատրաստել Ձեր բույսերը սիրով և հոգատարությամբ։<br/>
+                      <strong>Ձեր ծանրոցը շուտով կուղարկվի։</strong> Մենք կտեղեկացնենք Ձեզ առաքման մասին։
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- English -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 14px; background: #f7faf5; border-left: 4px solid #6a8f5a; border-radius: 0 10px 10px 0;">
+                <tr>
+                  <td style="padding: 14px 18px;">
+                    <div style="font-size: 12px; font-weight: 700; color: #6a8f5a; margin-bottom: 6px; letter-spacing: 0.5px;">🇬🇧 ENGLISH</div>
+                    <p style="margin: 0; color: #2d3d26; font-size: 14px; line-height: 1.7;">
+                      Thank you for your order, ${customerName}! 🌿<br/>
+                      Our team is already preparing your plants with love and care.<br/>
+                      <strong>Your package will be shipped very soon.</strong> We'll notify you once it's on its way!
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Russian -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="background: #f7faf5; border-left: 4px solid #8fbc6a; border-radius: 0 10px 10px 0;">
+                <tr>
+                  <td style="padding: 14px 18px;">
+                    <div style="font-size: 12px; font-weight: 700; color: #8fbc6a; margin-bottom: 6px; letter-spacing: 0.5px;">🇷🇺 РУССКИЙ</div>
+                    <p style="margin: 0; color: #2d3d26; font-size: 14px; line-height: 1.7;">
+                      Спасибо за ваш заказ, ${customerName}! 🌿<br/>
+                      Наша команда уже с любовью готовит ваши растения.<br/>
+                      <strong>Ваша посылка будет отправлена очень скоро.</strong> Мы уведомим вас об отправке!
+                    </p>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
 
