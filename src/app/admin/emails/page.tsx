@@ -29,9 +29,19 @@ export default function EmailCampaignsPage() {
   const validCustomers = customers.filter(c => c.email && c.email.includes('@'));
   const filteredCustomers = audience === 'all' ? validCustomers : validCustomers.filter(c => c.tag === audience);
   
-  const allEmails = [...new Set(filteredCustomers.map(c => c.email.trim()))];
+  // Create unique recipients list (to avoid sending multiple emails to the same address if there are duplicates)
+  const uniqueEmails = new Set<string>();
+  const allRecipients: { email: string; name: string }[] = [];
+  
+  filteredCustomers.forEach(c => {
+    const email = c.email.trim();
+    if (!uniqueEmails.has(email)) {
+      uniqueEmails.add(email);
+      allRecipients.push({ email, name: c.name });
+    }
+  });
 
-  const recipientCount = allEmails.length;
+  const recipientCount = allRecipients.length;
 
   const handleSend = async () => {
     if (!subject.trim() || !message.trim()) {
@@ -39,7 +49,7 @@ export default function EmailCampaignsPage() {
       return;
     }
     if (recipientCount === 0) {
-      alert('No customers with email addresses found. Make sure customers have entered their emails during checkout.');
+      alert('No customers with email addresses found in this audience.');
       return;
     }
     if (!confirm(`Send this campaign to ${recipientCount} customers? This action cannot be undone.`)) return;
@@ -54,7 +64,7 @@ export default function EmailCampaignsPage() {
         body: JSON.stringify({
           subject,
           message,
-          emails: allEmails,
+          recipients: allRecipients,
           promoCode: promoCode.trim() || null,
           promoDiscount: promoDiscount.trim() || null,
           senderName,
@@ -204,11 +214,14 @@ export default function EmailCampaignsPage() {
                   <span>✉️ Message Body *</span>
                   <span style={{ color: charCount > 1000 ? '#cc6666' : '#6a7a65', fontSize: '0.8rem' }}>{charCount} chars</span>
                 </label>
+                <div style={{ background: '#2a3528', padding: '10px 14px', borderRadius: '8px 8px 0 0', fontSize: '0.85rem', color: '#c5d8b3', border: '1px solid #3a4f38', borderBottom: 'none', display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <span>💡 <strong>Pro Tip:</strong> Type <code>{'{CustomerName}'}</code> to personalize the email. E.g. "Hello {'{CustomerName}'}!"</span>
+                </div>
                 <textarea
                   value={message}
                   onChange={e => setMessage(e.target.value)}
-                  placeholder={`Write your message here...\n\nYou can write in Armenian, English or Russian.\nThe email will be beautifully formatted and sent to all your customers.`}
-                  style={{ minHeight: '200px', resize: 'vertical', padding: '14px', background: '#1a2018', border: '1px solid #2a3528', borderRadius: '10px', color: '#e8eee5', fontFamily: 'inherit', fontSize: '14px', lineHeight: '1.7' }}
+                  placeholder={`Write your message here...\n\nYou can write in Armenian, English or Russian.\nExample: Բարև {CustomerName}! / Hello {CustomerName}! / Привет {CustomerName}!\n\nThe email will be beautifully formatted and sent to all your customers.`}
+                  style={{ minHeight: '200px', resize: 'vertical', padding: '14px', background: '#1a2018', border: '1px solid #3a4f38', borderRadius: '0 0 10px 10px', color: '#e8eee5', fontFamily: 'inherit', fontSize: '14px', lineHeight: '1.7', width: '100%', boxSizing: 'border-box' }}
                 />
               </div>
 

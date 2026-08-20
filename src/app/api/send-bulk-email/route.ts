@@ -6,9 +6,9 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { subject, message, emails, promoCode, promoDiscount, senderName } = body;
+    const { subject, message, recipients, promoCode, promoDiscount, senderName } = body;
 
-    if (!emails || emails.length === 0) {
+    if (!recipients || recipients.length === 0) {
       return NextResponse.json({ error: 'No recipients provided' }, { status: 400 });
     }
 
@@ -32,13 +32,13 @@ export async function POST(req: NextRequest) {
       </tr>
     ` : '';
 
-    const html = `
+    const baseHtml = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>${subject}</title>
+  <title>{{SUBJECT}}</title>
 </head>
 <body style="margin:0; padding:0; background-color:#f0f4ed; font-family: 'Segoe UI', Arial, sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f0f4ed; padding: 40px 0;">
@@ -58,14 +58,14 @@ export async function POST(req: NextRequest) {
           <!-- Subject Banner -->
           <tr>
             <td style="background: #c5d8b3; padding: 18px 40px; text-align: center;">
-              <p style="margin: 0; color: #2d3d26; font-size: 16px; font-weight: 700;">${subject}</p>
+              <p style="margin: 0; color: #2d3d26; font-size: 16px; font-weight: 700;">{{SUBJECT}}</p>
             </td>
           </tr>
 
           <!-- Message Body -->
           <tr>
             <td style="padding: 36px 40px 28px;">
-              <div style="color: #3a4d35; font-size: 15px; line-height: 1.8; white-space: pre-wrap;">${message.replace(/\n/g, '<br/>')}</div>
+              <div style="color: #3a4d35; font-size: 15px; line-height: 1.8; white-space: pre-wrap;">{{MESSAGE}}</div>
             </td>
           </tr>
 
@@ -100,23 +100,42 @@ export async function POST(req: NextRequest) {
 </body>
 </html>`;
 
-    // Send in batches using Resend (max 50 per call in free plan)
     const results = [];
-    const batchSize = 50;
+    const batchSize = 100; // Resend allows up to 100 emails per batch request
     
-    for (let i = 0; i < emails.length; i += batchSize) {
-      const batch = emails.slice(i, i + batchSize);
-      const { data, error } = await resend.emails.send({
-        from: 'Masis Garden <onboarding@resend.dev>',
-        to: batch,
-        subject,
-        html,
+    for (let i = 0; i < recipients.length; i += batchSize) {
+      const batch = recipients.slice(i, i + batchSize);
+      
+      const emailOptions = batch.map((recipient: any) => {
+        // Extract first name for {CustomerName} variable
+        const firstName = recipient.name ? recipient.name.split(' ')[0] : 'Customer';
+        
+        // Personalize the message
+        let personalizedMessage = message.replace(/{CustomerName}/g, firstName);
+        personalizedMessage = personalizedMessage.replace(/\n/g, '<br/>');
+
+        // Personalize the subject too just in case
+        let personalizedSubject = subject.replace(/{CustomerName}/g, firstName);
+
+        // Replace placeholders in base HTML
+        let finalHtml = baseHtml
+          .replace(/{{SUBJECT}}/g, personalizedSubject)
+          .replace(/{{MESSAGE}}/g, personalizedMessage);
+
+        return {
+          from: 'Masis Garden <onboarding@resend.dev>',
+          to: [recipient.email],
+          subject: personalizedSubject,
+          html: finalHtml,
+        };
       });
+
+      const { data, error } = await resend.batch.send(emailOptions);
       if (error) results.push({ batch: i, error });
       else results.push({ batch: i, success: true, data });
     }
 
-    return NextResponse.json({ success: true, sent: emails.length, results });
+    return NextResponse.json({ success: true, sent: recipients.length, results });
   } catch (err) {
     console.error('Bulk email error:', err);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
