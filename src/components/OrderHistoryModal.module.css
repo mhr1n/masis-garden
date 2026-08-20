@@ -1,0 +1,269 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 15, 10, 0.75);
+  backdrop-filter: blur(8px);
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -46%) scale(0.96);
+  width: 92%;
+  max-width: 650px;
+  max-height: 85vh;
+  background: #151d14;
+  border: 1px solid #2d3f2c;
+  border-radius: 24px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.modal.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.header {
+  padding: 20px 24px;
+  border-bottom: 1px solid #243423;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #111810;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #e8eee5;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+}
+
+.closeBtn {
+  background: #202b1f;
+  border: 1px solid #334631;
+  color: #c5d8b3;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: 0.2s;
+}
+
+.closeBtn:hover {
+  background: #2c3c2b;
+  color: #fff;
+}
+
+.body {
+  padding: 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.searchBox {
+  background: #1a2418;
+  border: 1px solid #2d3f2c;
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.searchForm {
+  display: flex;
+  gap: 10px;
+}
+
+.searchInput {
+  flex: 1;
+  background: #0f150e;
+  border: 1px solid #334731;
+  border-radius: 10px;
+  padding: 10px 14px;
+  color: #e8eee5;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.searchInput:focus {
+  border-color: #6a8f5a;
+}
+
+.searchBtn {
+  background: linear-gradient(135deg, #4a5c3f, #33432b);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: 0.2s;
+  white-space: nowrap;
+}
+
+.searchBtn:hover {
+  background: #5a6e4d;
+}
+
+.orderCard {
+  background: #111710;
+  border: 1px solid #233122;
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.orderHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  border-bottom: 1px solid #1c271b;
+  padding-bottom: 12px;
+}
+
+.orderId {
+  font-weight: 800;
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+.orderDate {
+  font-size: 0.78rem;
+  color: #6a7a65;
+}
+
+/* Tracking Step Bar */
+.stepper {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin: 10px 0 16px;
+}
+
+.stepper::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 20px;
+  right: 20px;
+  height: 2px;
+  background: #233122;
+  z-index: 1;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  z-index: 2;
+}
+
+.stepIcon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #182217;
+  border: 2px solid #334731;
+  color: #6a7a65;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.stepActive .stepIcon {
+  background: #4a5c3f;
+  border-color: #8fbc6a;
+  color: #fff;
+}
+
+.stepLabel {
+  font-size: 0.72rem;
+  color: #6a7a65;
+  font-weight: 600;
+}
+
+.stepActive .stepLabel {
+  color: #c5d8b3;
+}
+
+.itemsList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #161e14;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.itemRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #c5d8b3;
+}
+
+.orderFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid #1c271b;
+  font-size: 0.9rem;
+}
+
+.totalVal {
+  color: #8fbc6a;
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 600px) {
+  .modal {
+    width: 95%;
+    max-height: 90vh;
+  }
+  .searchForm {
+    flex-direction: column;
+  }
+  .searchBtn {
+    width: 100%;
+  }
+}

@@ -95,6 +95,12 @@ export default function CheckoutModal({ isOpen, onClose, dict }: CheckoutModalPr
       giftMessage: form.giftMessage,
     });
     
+    // Remember customer phone/email for order tracking
+    try {
+      if (form.phone) localStorage.setItem('ariel_customer_phone', form.phone);
+      if (form.email) localStorage.setItem('ariel_customer_email', form.email);
+    } catch {}
+
     // OrdersContext automatically listens to Supabase realtime, 
     // so we don't need to call a local addOrder function.
 

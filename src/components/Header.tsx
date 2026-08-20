@@ -6,10 +6,12 @@ import styles from './Header.module.css';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useCart } from '../context/CartContext';
 import { useState, useEffect } from 'react';
+import OrderHistoryModal from './OrderHistoryModal';
 
 export default function Header({ lang, dict }: { lang: Locale; dict: any }) {
   const { cartCount, setIsCartOpen } = useCart();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [historyOpen, setHistoryOpen] = useState(false);
 
   // Prevent body scroll when menu is open
   useEffect(() => {
@@ -22,12 +24,18 @@ export default function Header({ lang, dict }: { lang: Locale; dict: any }) {
   }, [menuOpen]);
 
   const navLinks = [
-    { href: `/${lang}`, label: dict.navigation.home || 'Home' },
-    { href: `/${lang}#catalog`, label: dict.navigation.category || 'Shop' },
-    { href: `/${lang}/wholesale`, label: dict.navigation.bulkImport || 'Wholesale' },
-    { href: `/${lang}/blog`, label: dict.navigation.blog || 'Blog' },
-    { href: `/${lang}#about`, label: dict.navigation.about || 'About' },
+    { href: `/${lang}`, label: dict.navigation?.home || 'Home' },
+    { href: `/${lang}#catalog`, label: dict.navigation?.category || 'Shop' },
+    { href: `/${lang}/wholesale`, label: dict.navigation?.bulkImport || 'Wholesale' },
+    { href: `/${lang}/blog`, label: dict.navigation?.blog || 'Blog' },
+    { href: `/${lang}#about`, label: dict.navigation?.about || 'About' },
   ];
+
+  const trackLabel = {
+    en: 'My Orders',
+    am: 'Պատվերներ',
+    ru: 'Мои заказы',
+  }[lang] || 'My Orders';
 
   return (
     <>
@@ -50,9 +58,19 @@ export default function Header({ lang, dict }: { lang: Locale; dict: any }) {
 
           {/* Actions */}
           <div className={styles.actions}>
-            <div className={styles.badge247}>{dict.common['24_7']}</div>
+            {/* Track Orders Button */}
+            <button
+              className={styles.trackBtn}
+              onClick={() => setHistoryOpen(true)}
+              title="Track Orders & History"
+            >
+              <span>📦</span>
+              <span>{trackLabel}</span>
+            </button>
+
+            <div className={styles.badge247}>{dict.common?.['24_7'] || '24/7 Support'}</div>
             <LanguageSwitcher currentLang={lang} />
-            <button className={styles.cartBtn} aria-label={dict.common.cart} onClick={() => setIsCartOpen(true)}>
+            <button className={styles.cartBtn} aria-label={dict.common?.cart || 'Cart'} onClick={() => setIsCartOpen(true)}>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M9 20a1 1 0 100-2 1 1 0 000 2zM20 20a1 1 0 100-2 1 1 0 000 2z"/>
                 <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/>
@@ -104,6 +122,29 @@ export default function Header({ lang, dict }: { lang: Locale; dict: any }) {
               {link.label}
             </Link>
           ))}
+          
+          <button
+            onClick={() => {
+              setMenuOpen(false);
+              setHistoryOpen(true);
+            }}
+            className={styles.overlayLink}
+            style={{
+              background: 'none',
+              border: 'none',
+              textAlign: 'left',
+              color: '#c5d8b3',
+              fontSize: '1.2rem',
+              fontWeight: 700,
+              cursor: 'pointer',
+              padding: '12px 0',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px'
+            }}
+          >
+            <span>📦</span> {trackLabel}
+          </button>
         </nav>
 
         {/* Bottom actions */}
@@ -113,11 +154,18 @@ export default function Header({ lang, dict }: { lang: Locale; dict: any }) {
             className={styles.overlayCartBtn}
             onClick={() => { setMenuOpen(false); setIsCartOpen(true); }}
           >
-            🛒 {dict.common.cart}
+            🛒 {dict.common?.cart || 'Cart'}
             {cartCount > 0 && <span className={styles.overlayCartCount}>{cartCount}</span>}
           </button>
         </div>
       </div>
+
+      {/* Customer Order History Modal */}
+      <OrderHistoryModal
+        isOpen={historyOpen}
+        onClose={() => setHistoryOpen(false)}
+        lang={lang}
+      />
     </>
   );
 }
