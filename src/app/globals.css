@@ -512,6 +512,10 @@ img { max-width: 100%; display: block; }
     --header-height: 60px;
   }
 
+  body {
+    padding-bottom: 76px;
+  }
+
   .container {
     padding: 0 16px;
   }

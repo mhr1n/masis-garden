@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Suspense } from "react";
 import heroBg from "../../../public/hero-bg.png";
 import shopBannerBg from "../../../public/shop-banner-bg.jpg";
+import StoriesBar from "../../components/StoriesBar";
 
 export default async function Home({
   params,
@@ -43,6 +44,11 @@ export default async function Home({
           </div>
         </div>
       </section>
+
+      {/* ── Instagram Highlights Stories Bar ── */}
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '8px 0 0' }}>
+        <StoriesBar lang={lang} />
+      </div>
 
       {/* ── Slim Luxury Shop Banner ── */}
       <section id="catalog" className="section-padded container">

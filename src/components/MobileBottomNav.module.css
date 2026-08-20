@@ -1,0 +1,100 @@
+.bottomNav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: rgba(14, 20, 13, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+  z-index: 990;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 8px;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 768px) {
+  .bottomNav {
+    display: flex;
+  }
+}
+
+.navItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  background: none;
+  border: none;
+  color: #8a9c85;
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  min-width: 54px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.navItem:active {
+  transform: scale(0.92);
+}
+
+.navIcon {
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.navLabel {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  transition: color 0.2s ease;
+}
+
+.navItemActive {
+  color: #8fbc6a;
+}
+
+.navItemActive .navIcon {
+  transform: translateY(-2px);
+}
+
+.navItemActive .navLabel {
+  color: #c5d8b3;
+}
+
+.cartBadge {
+  position: absolute;
+  top: -4px;
+  right: -8px;
+  background: linear-gradient(135deg, #c45d35, #e07050);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 900;
+  min-width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+  box-shadow: 0 2px 8px rgba(196, 93, 53, 0.5);
+  border: 1.5px solid #141a13;
+  animation: pulseBadge 2s infinite;
+}
+
+@keyframes pulseBadge {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}

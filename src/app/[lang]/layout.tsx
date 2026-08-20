@@ -29,6 +29,7 @@ import Footer from "../../components/Footer";
 import { Providers } from "../../components/Providers";
 import { getDictionary } from "../../get-dictionary";
 import CartDrawer from "../../components/CartDrawer";
+import MobileBottomNav from "../../components/MobileBottomNav";
 
 export default async function RootLayout({
   children,
@@ -48,6 +49,7 @@ export default async function RootLayout({
           <CartDrawer dict={dict} />
           <main>{children}</main>
           <Footer lang={lang as Locale} />
+          <MobileBottomNav lang={lang} />
         </Providers>
       </body>
     </html>
