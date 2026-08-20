@@ -95,9 +95,8 @@ export default function CheckoutModal({ isOpen, onClose, dict }: CheckoutModalPr
       giftMessage: form.giftMessage,
     });
     
-    // Add to local OrdersContext
-    const discountData = appliedPromo ? { code: appliedPromo.code, amount: discountAmount } : undefined;
-    addOrder(form, items, total, paymentMethod, discountData);
+    // OrdersContext automatically listens to Supabase realtime, 
+    // so we don't need to call a local addOrder function.
 
     // Send order confirmation email if email is provided
     if (form.email?.trim()) {
