@@ -136,6 +136,12 @@
   background: #fdfdfd;
 }
 
+@media (max-width: 768px) {
+  .footer {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
 .total {
   display: flex;
   justify-content: space-between;

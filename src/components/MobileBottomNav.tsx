@@ -34,10 +34,10 @@ export default function MobileBottomNav({ lang }: MobileBottomNavProps) {
   };
 
   const labels = {
-    en: { home: 'Feed', catalog: 'Explore', blog: 'Care Guide', wholesale: 'Wholesale' },
+    en: { home: 'Feed', catalog: 'Explore', blog: 'Care', wholesale: 'Wholesale' },
     am: { home: 'Գլխավոր', catalog: 'Բույսեր', blog: 'Խնամք', wholesale: 'Մեծածախ' },
     ru: { home: 'Главная', catalog: 'Каталог', blog: 'Уход', wholesale: 'Оптом' },
-  }[lang as 'en' | 'am' | 'ru'] || { home: 'Feed', catalog: 'Explore', blog: 'Care Guide', wholesale: 'Wholesale' };
+  }[lang as 'en' | 'am' | 'ru'] || { home: 'Feed', catalog: 'Explore', blog: 'Care', wholesale: 'Wholesale' };
 
   return (
     <div className={styles.floatingDockWrapper}>

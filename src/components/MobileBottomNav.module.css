@@ -67,11 +67,16 @@
 }
 
 .dockLabel {
-  font-size: 0.68rem;
+  font-size: 0.62rem;
   font-weight: 700;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.2px;
   transition: color 0.2s ease;
   color: #7b8e76;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 64px;
+  text-align: center;
 }
 
 .dockItemActive {
