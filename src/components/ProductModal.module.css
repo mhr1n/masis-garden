@@ -389,7 +389,7 @@
     height: 260px;
   }
   .infoCol {
-    padding: 16px 16px calc(100px + 96px + env(safe-area-inset-bottom, 0px)); /* generous space above sticky button + dock */
+    padding: 16px 16px calc(80px + env(safe-area-inset-bottom, 0px)); /* space for sticky add button */
     gap: 12px;
   }
   .name {
@@ -408,7 +408,7 @@
   }
   .addBtn {
     position: fixed;
-    bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
     left: 16px;
     width: calc(100% - 32px);
     z-index: 9999;

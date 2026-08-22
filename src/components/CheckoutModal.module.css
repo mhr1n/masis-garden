@@ -463,7 +463,7 @@
     border-radius: 0;
   }
   .header {
-    padding: 16px 20px;
+    padding: calc(16px + env(safe-area-inset-top, 0px)) 20px 16px;
   }
   .summary {
     max-height: none;
@@ -473,7 +473,7 @@
     padding: 16px 20px;
   }
   .footer {
-    padding: 16px 20px;
+    padding: 16px 20px calc(100px + env(safe-area-inset-bottom, 0px));
   }
   .submitBtn, .cancelBtn {
     padding: 10px 20px;
