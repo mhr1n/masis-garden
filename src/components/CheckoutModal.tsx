@@ -37,7 +37,13 @@ export default function CheckoutModal({ isOpen, onClose, dict }: CheckoutModalPr
     hidePrice: false,
   });
 
-  const subtotal = items.reduce((sum, item) => sum + item.price, 0);
+  const subtotal = items.reduce((sum, item) => {
+    const orig = item.originalPrice ?? 0;
+    const cur = item.price;
+    const hasDiscount = orig > 0 && orig !== cur;
+    const effectivePrice = hasDiscount ? Math.min(orig, cur) : cur;
+    return sum + effectivePrice;
+  }, 0);
   const discountAmount = appliedPromo 
     ? (appliedPromo.type === 'percentage' ? subtotal * (appliedPromo.value / 100) : appliedPromo.value)
     : 0;
@@ -186,7 +192,23 @@ export default function CheckoutModal({ isOpen, onClose, dict }: CheckoutModalPr
                         {item.selectedColor}
                       </p>
                     </div>
-                    <span className={styles.itemPrice}>{item.price.toLocaleString()} ֏</span>
+                    {(() => {
+                      const orig = item.originalPrice ?? 0;
+                      const cur = item.price;
+                      const hasDiscount = orig > 0 && orig !== cur;
+                      const displayCurrent = hasDiscount ? Math.min(orig, cur) : cur;
+                      const displayOriginal = hasDiscount ? Math.max(orig, cur) : 0;
+                      return (
+                        <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                          <span className={styles.itemPrice}>{displayCurrent.toLocaleString()} ֏</span>
+                          {hasDiscount && (
+                            <div style={{ fontSize: '0.75rem', color: '#bbb', textDecoration: 'line-through' }}>
+                              {displayOriginal.toLocaleString()} ֏
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })()}
                   </div>
                 ))}
 

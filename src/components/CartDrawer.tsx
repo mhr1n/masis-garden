@@ -18,7 +18,13 @@ export default function CartDrawer({ dict }: { dict: any }) {
     return () => window.removeEventListener('keydown', handleEsc);
   }, [isCartOpen, setIsCartOpen]);
 
-  const total = items.reduce((sum, item) => sum + item.price, 0);
+  const total = items.reduce((sum, item) => {
+    const orig = item.originalPrice ?? 0;
+    const cur = item.price;
+    const hasDiscount = orig > 0 && orig !== cur;
+    const effectivePrice = hasDiscount ? Math.min(orig, cur) : cur;
+    return sum + effectivePrice;
+  }, 0);
 
   const handleCheckout = () => {
     setIsCartOpen(false);
@@ -63,7 +69,23 @@ export default function CartDrawer({ dict }: { dict: any }) {
                   </div>
                   <div className={styles.itemDetails}>
                     <h4>{item.name}</h4>
-                    <p className={styles.price}>{item.price.toLocaleString()} ֏</p>
+                    {(() => {
+                      const orig = item.originalPrice ?? 0;
+                      const cur = item.price;
+                      const hasDiscount = orig > 0 && orig !== cur;
+                      const displayCurrent = hasDiscount ? Math.min(orig, cur) : cur;
+                      const displayOriginal = hasDiscount ? Math.max(orig, cur) : 0;
+                      return (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+                          <p className={styles.price}>{displayCurrent.toLocaleString()} ֏</p>
+                          {hasDiscount && (
+                            <span style={{ fontSize: '0.78rem', color: '#aaa', textDecoration: 'line-through' }}>
+                              {displayOriginal.toLocaleString()} ֏
+                            </span>
+                          )}
+                        </div>
+                      );
+                    })()}
                     {(item.selectedSize || item.selectedColor) && (
                       <p className={styles.options}>
                         {item.selectedSize}
