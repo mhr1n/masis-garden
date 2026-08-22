@@ -10,7 +10,7 @@
   opacity: 0;
   visibility: hidden;
   transition: opacity var(--transition-fast), visibility var(--transition-fast);
-  z-index: 900;
+  z-index: 1000;
 }
 
 .overlay.open {
@@ -27,7 +27,7 @@
   height: 100vh;
   background: var(--color-surface);
   box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
-  z-index: 910;
+  z-index: 1001;
   display: flex;
   flex-direction: column;
   transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1);
@@ -131,15 +131,9 @@
 }
 
 .footer {
-  padding: 20px 25px;
+  padding: 20px 25px calc(20px + env(safe-area-inset-bottom, 0px));
   border-top: 1px solid var(--color-border);
   background: #fdfdfd;
-}
-
-@media (max-width: 768px) {
-  .footer {
-    padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
-  }
 }
 
 .total {

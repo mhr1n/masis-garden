@@ -48,7 +48,14 @@ export default function ProductModal({ product, dictionary, onClose }: Props) {
   };
 
   const handleAdd = () => {
-    addToCart(product, selectedSize || undefined, selectedColor || undefined);
+    const origPrice = product.originalPrice ?? 0;
+    const curPrice = product.price;
+    const hasDiscount = Boolean(origPrice > 0 && origPrice !== curPrice);
+    const displayCurrent = hasDiscount ? Math.min(origPrice, curPrice) : curPrice;
+    
+    const itemToAdd = hasDiscount ? { ...product, price: displayCurrent } : product;
+    addToCart(itemToAdd, selectedSize || undefined, selectedColor || undefined);
+    
     setAdded(true);
     setTimeout(() => {
       setAdded(false);
