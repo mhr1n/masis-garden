@@ -66,23 +66,23 @@ export default function OrdersAdminPage() {
             <p>Customer orders will appear here once they checkout.</p>
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', padding: '24px' }}>
+          <div className="orders-list">
             {sortedOrders.map(order => {
               const statusStyle = getStatusColor(order.status);
               
               return (
-                <div key={order.id} style={{ background: '#131810', border: '1px solid #2a3528', borderRadius: '12px', padding: '20px' }}>
+                <div key={order.id} className="order-card">
                   
                   {/* Header */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', borderBottom: '1px solid #2a3528', paddingBottom: '16px', marginBottom: '16px' }}>
+                  <div className="order-card-header">
                     <div>
-                      <h3 style={{ color: '#e8eee5', margin: '0 0 8px 0' }}>Order #{order.id.slice(4, 12)}</h3>
+                      <h3 style={{ color: '#e8eee5', margin: '0 0 8px 0', fontSize: '1.25rem' }}>Order #{order.id.slice(4, 12)}</h3>
                       <span style={{ fontSize: '0.85rem', color: '#6a7a65' }}>
                         Placed: {new Date(order.createdAt).toLocaleString()}
                       </span>
                     </div>
                     
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div className="order-card-status">
                       <span style={{ 
                         background: statusStyle.bg, 
                         color: statusStyle.color, 
@@ -136,7 +136,7 @@ export default function OrdersAdminPage() {
                     </div>
                   </div>
 
-                  <div style={{ display: 'flex', gap: '32px' }}>
+                  <div className="order-details-layout">
                     
                     {/* Customer Info */}
                     <div style={{ flex: '1' }}>

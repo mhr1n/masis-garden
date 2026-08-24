@@ -1112,3 +1112,65 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #334631;
 }
+/* "?"? ORDERS PAGE "?"? */
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px;
+}
+
+.order-card {
+  background: #131810;
+  border: 1px solid #2a3528;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.order-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid #2a3528;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+}
+
+.order-card-status {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.order-details-layout {
+  display: flex;
+  gap: 32px;
+}
+
+@media (max-width: 768px) {
+  .orders-list {
+    padding: 16px 0;
+  }
+  
+  .order-card-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .order-card-status {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .order-card-status select {
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .order-details-layout {
+    flex-direction: column;
+    gap: 24px;
+  }
+}
