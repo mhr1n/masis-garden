@@ -92,8 +92,9 @@
 .mainImg {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
+  padding: 8px; /* Optional padding so it doesn't touch the absolute edges */
 }
 
 /* Image Navigation Arrows (Glassmorphism) */
@@ -386,7 +387,8 @@
     border-radius: 0;
   }
   .mainImageArea {
-    height: 260px;
+    height: 280px;
+    padding-top: env(safe-area-inset-top, 0px);
   }
   .infoCol {
     padding: 16px 16px calc(80px + env(safe-area-inset-bottom, 0px)); /* space for sticky add button */
