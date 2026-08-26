@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import type { Product } from '../data/products';
 import { useCart } from '../context/CartContext';
 import styles from './ProductModal.module.css';
+import { useParams } from 'next/navigation';
 
 const LIGHT_MAP: Record<string, { icon: string; label: string }> = {
   full_sun:        { icon: '☀', label: 'Full Sun' },
@@ -20,6 +21,21 @@ interface Props {
 
 export default function ProductModal({ product, dictionary, onClose }: Props) {
   const { addToCart, setIsCartOpen } = useCart();
+  const params = useParams();
+  const lang = (params?.lang as string) || 'en';
+
+  const localizedName = lang === 'ru' && product.nameRu ? product.nameRu 
+                      : lang === 'am' && product.nameAm ? product.nameAm 
+                      : product.name;
+  
+  const localizedDescription = lang === 'ru' && product.descriptionRu ? product.descriptionRu 
+                             : lang === 'am' && product.descriptionAm ? product.descriptionAm 
+                             : product.description;
+
+  const localizedWatering = lang === 'ru' && product.wateringRu ? product.wateringRu 
+                          : lang === 'am' && product.wateringAm ? product.wateringAm 
+                          : product.watering;
+
   const [selectedSize, setSelectedSize] = useState(product.sizes?.[0] || '');
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0] || '');
   const [added, setAdded] = useState(false);
@@ -86,7 +102,7 @@ export default function ProductModal({ product, dictionary, onClose }: Props) {
               {images[currentImageIdx] ? (
                 <img 
                   src={images[currentImageIdx]} 
-                  alt={product.name} 
+                  alt={localizedName} 
                   className={styles.mainImg}
                 />
               ) : (
@@ -151,28 +167,22 @@ export default function ProductModal({ product, dictionary, onClose }: Props) {
             {product.armenianName && (
               <p className={styles.armenian}>{product.armenianName}</p>
             )}
-            <h2 className={styles.name}>{product.name}</h2>
+            <h2 className={styles.name}>{localizedName}</h2>
             {(() => {
               const origPrice = product.originalPrice ?? 0;
               const curPrice = product.price;
               const hasDiscount = Boolean(origPrice > 0 && origPrice !== curPrice);
-              const displayOriginal = hasDiscount ? Math.max(origPrice, curPrice) : 0;
               const displayCurrent = hasDiscount ? Math.min(origPrice, curPrice) : curPrice;
-              const discountPercent = hasDiscount
-                ? Math.round(((displayOriginal - displayCurrent) / displayOriginal) * 100)
-                : 0;
-
+              const displayOriginal = hasDiscount ? Math.max(origPrice, curPrice) : 0;
+              const discountPercent = hasDiscount ? Math.round(((displayOriginal - displayCurrent) / displayOriginal) * 100) : 0;
+              
               return (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', margin: '8px 0 14px 0' }}>
+                <div className={styles.priceRow}>
                   <span className={styles.price}>{displayCurrent.toLocaleString()} ֏</span>
                   {hasDiscount && (
                     <>
-                      <span style={{ fontSize: '1rem', color: '#999', textDecoration: 'line-through' }}>
-                        {displayOriginal.toLocaleString()} ֏
-                      </span>
-                      <span style={{ background: '#e63946', color: '#fff', fontSize: '0.75rem', fontWeight: 800, padding: '3px 8px', borderRadius: '20px' }}>
-                        -{discountPercent}% OFF
-                      </span>
+                      <span className={styles.originalPrice}>{displayOriginal.toLocaleString()} ֏</span>
+                      <span className={styles.discountBadge}>-{discountPercent}% OFF</span>
                     </>
                   )}
                 </div>
@@ -191,7 +201,7 @@ export default function ProductModal({ product, dictionary, onClose }: Props) {
             )}
 
             {/* Description */}
-            <p className={styles.description}>{product.description}</p>
+            <p className={styles.description}>{localizedDescription}</p>
 
             {/* ── Care Icons Grid ── */}
             {(product.lightRequirement || product.watering || product.temperature || product.humidity || product.difficulty) && (
@@ -207,7 +217,7 @@ export default function ProductModal({ product, dictionary, onClose }: Props) {
                   <div className={styles.careCard}>
                     <span className={styles.careIcon}>💧</span>
                     <p className={styles.careKey}>{dict.care?.watering}</p>
-                    <p className={styles.careVal}>{product.watering}</p>
+                    <p className={styles.careVal}>{localizedWatering}</p>
                   </div>
                 )}
                 {product.temperature && (

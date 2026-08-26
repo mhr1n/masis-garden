@@ -85,7 +85,10 @@ export default function SidebarFilter({ filters, onChange, dict, resultCount }: 
 
   const categoryList = [
     { key: 'all', label: '🌿 ' + dict.filter.allCategories },
-    ...dynamicCategories.map(c => ({ key: c.id, label: `${c.emoji} ${c.name}` })),
+    ...dynamicCategories.map(c => ({ 
+      key: c.id, 
+      label: `${c.emoji} ${dict.filter?.[c.id + 'Label'] || c.name}` 
+    })),
   ];
 
   const lightOptions = [

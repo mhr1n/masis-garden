@@ -6,6 +6,8 @@ import type { Product } from '../data/products';
 import { useCart } from '../context/CartContext';
 import ProductModal from './ProductModal';
 
+import { useParams } from 'next/navigation';
+
 const TAG_STYLES: Record<string, string> = {
   best_seller: styles.tagGold,
   new_arrival: styles.tagBlue,
@@ -47,6 +49,12 @@ interface ProductCardProps {
 export default function ProductCard({ product, dictionary }: ProductCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { addToCart } = useCart();
+  const params = useParams();
+  const lang = (params?.lang as string) || 'en';
+
+  const localizedName = lang === 'ru' && product.nameRu ? product.nameRu 
+                      : lang === 'am' && product.nameAm ? product.nameAm 
+                      : product.name;
 
   const primaryTag = product.tags?.[0];
 
@@ -127,13 +135,19 @@ export default function ProductCard({ product, dictionary }: ProductCardProps) {
           {product.botanicalName && (
             <p className={styles.botanical}>{product.botanicalName}</p>
           )}
-          <h3 className={styles.name}>{product.name}</h3>
+          <h3 className={styles.name}>{localizedName}</h3>
 
           {/* Meta row */}
           <div className={styles.meta}>
-            {product.lightRequirement && (
-              <span className={styles.metaItem}>{LIGHT_LABEL[product.lightRequirement]}</span>
-            )}
+              {product.lightRequirement && (
+                <span className={styles.metaItem}>
+                  {(() => {
+                    const icon = LIGHT_LABEL[product.lightRequirement]?.split(' ')[0] || '☀️';
+                    const localized = dictionary.care?.[`light_${product.lightRequirement}`];
+                    return localized ? `${icon} ${localized}` : LIGHT_LABEL[product.lightRequirement];
+                  })()}
+                </span>
+              )}
             {product.difficulty && (
               <span className={styles.metaItem}>
                 {dictionary.care?.[`difficulty_${product.difficulty}`]}

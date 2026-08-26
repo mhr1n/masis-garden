@@ -15,6 +15,8 @@ export type Tag = 'best_seller' | 'new_arrival' | 'popular' | 'top_rated' | 'low
 export interface Product {
   id: string;
   name: string;
+  nameRu?: string;
+  nameAm?: string;
   botanicalName?: string;
   armenianName?: string;
   type: ProductType;
@@ -25,6 +27,8 @@ export interface Product {
 
   // Description
   description: string;
+  descriptionRu?: string;
+  descriptionAm?: string;
   careTips?: string[];
   features?: string[];
 
@@ -37,6 +41,8 @@ export interface Product {
   // Care
   lightRequirement?: LightRequirement;
   watering?: WateringFrequency;
+  wateringRu?: string;
+  wateringAm?: string;
   temperature?: string;   // e.g. "18–27°C"
   humidity?: Humidity;
   difficulty?: Difficulty;

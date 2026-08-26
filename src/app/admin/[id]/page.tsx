@@ -147,6 +147,14 @@ export default function ProductForm({ params }: { params: Promise<{ id: string }
               <input name="name" value={form.name || ''} onChange={handleChange} required />
             </div>
             <div className="form-group">
+              <label>Product Name (Russian)</label>
+              <input name="nameRu" value={form.nameRu || ''} onChange={handleChange} />
+            </div>
+            <div className="form-group">
+              <label>Product Name (Armenian)</label>
+              <input name="nameAm" value={form.nameAm || ''} onChange={handleChange} />
+            </div>
+            <div className="form-group">
               <label>Botanical Name</label>
               <input name="botanicalName" value={form.botanicalName || ''} onChange={handleChange} />
             </div>
@@ -194,8 +202,16 @@ export default function ProductForm({ params }: { params: Promise<{ id: string }
             </div>
             
             <div className="form-group form-full">
-              <label>Description</label>
+              <label>Description (English)</label>
               <textarea name="description" value={form.description || ''} onChange={handleChange} />
+            </div>
+            <div className="form-group form-full">
+              <label>Description (Russian)</label>
+              <textarea name="descriptionRu" value={form.descriptionRu || ''} onChange={handleChange} />
+            </div>
+            <div className="form-group form-full">
+              <label>Description (Armenian)</label>
+              <textarea name="descriptionAm" value={form.descriptionAm || ''} onChange={handleChange} />
             </div>
           </div>
         </div>
@@ -315,8 +331,16 @@ export default function ProductForm({ params }: { params: Promise<{ id: string }
 
               {/* 6. Watering Frequency */}
               <div className="form-group">
-                <label>💧 Watering Frequency</label>
-                <input name="watering" placeholder="e.g. Once per week, Every 2–3 weeks..." value={form.watering || ''} onChange={handleChange} />
+                <label>💧 Watering (English)</label>
+                <input name="watering" placeholder="e.g. Once per week..." value={form.watering || ''} onChange={handleChange} />
+              </div>
+              <div className="form-group">
+                <label>💧 Watering (Russian)</label>
+                <input name="wateringRu" placeholder="e.g. Раз в неделю..." value={form.wateringRu || ''} onChange={handleChange} />
+              </div>
+              <div className="form-group">
+                <label>💧 Watering (Armenian)</label>
+                <input name="wateringAm" placeholder="e.g. Շաբաթը մեկ..." value={form.wateringAm || ''} onChange={handleChange} />
               </div>
 
               {/* Additional Specs */}
