@@ -85,8 +85,8 @@ export default async function WholesalePage({
           </div>
 
           <div className={styles.footerLink}>
-            <Link href={\/\\} className={styles.backBtn}>
-              {dict.wholesale?.backBtn || '? Back to Store'}
+            <Link href={`/${lang}`} className={styles.backBtn}>
+              {dict.wholesale?.backBtn || '← Back to Store'}
             </Link>
           </div>
         </div>
