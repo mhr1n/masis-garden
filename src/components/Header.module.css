@@ -77,24 +77,30 @@
 }
 
 .badge247 {
-  background-color: #ffffff;
-  color: var(--color-primary);
-  padding: 5px 13px;
-  border-radius: var(--radius-full);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.4px;
-  cursor: pointer;
-  border: none;
-  font-family: inherit;
   display: flex;
   align-items: center;
-  gap: 6px;
-  transition: background-color 0.2s;
+  gap: 7px;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  padding: 7px 14px;
+  border-radius: 50px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 0.2px;
 }
 
 .badge247:hover {
-  background-color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.32);
+  border-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+  transform: translateY(-1px);
 }
 
 .supportDropdown {
@@ -103,8 +109,9 @@
 }
 
 .supportChevron {
-  transition: transform 0.2s ease;
-  color: var(--color-primary);
+  transition: transform 0.25s ease;
+  margin-left: 2px;
+  color: #ffffff;
 }
 
 .supportChevronOpen {
@@ -115,50 +122,53 @@
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  background: #ffffff;
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  box-shadow: var(--shadow-md);
-  padding: 6px;
   min-width: 170px;
-  z-index: 10;
+  background: rgba(30, 45, 30, 0.82);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  border-radius: 16px;
+  padding: 6px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  animation: supportMenuIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+  gap: 4px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35), inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+  z-index: 200;
+  animation: supportMenuIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.2);
 }
 
 @keyframes supportMenuIn {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(-8px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .supportItem {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 12px;
-  border-radius: 8px;
-  color: var(--color-text);
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-decoration: none;
-  background: none;
-  border: none;
   width: 100%;
-  text-align: left;
-  cursor: pointer;
+  padding: 9px 12px;
+  border-radius: 10px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.9);
   font-family: inherit;
-  transition: background 0.15s, color 0.15s;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: left;
+  transition: all 0.2s ease;
 }
 
 .supportItem:hover {
-  background: var(--color-primary-light);
-  color: var(--color-primary-dark);
+  background: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+  transform: translateX(2px);
 }
 
 .supportItemIcon {
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .supportItemText {
