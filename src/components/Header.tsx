@@ -179,19 +179,19 @@ export default function Header({ lang, dict }: { lang: Locale; dict: any }) {
         <div className={styles.overlayBody}>
           <nav className={styles.overlayNav}>
             <Link href={`/${lang}#catalog`} className={styles.overlayLink} onClick={() => setMenuOpen(false)}>
-              <span className={styles.linkLabelNumber}>01</span>
+              <span className={styles.linkLabelNumber}>🛍️</span>
               <span className={styles.linkLabelText}>{menuTranslations.shop}</span>
             </Link>
             <Link href={`/${lang}/blog`} className={styles.overlayLink} onClick={() => setMenuOpen(false)}>
-              <span className={styles.linkLabelNumber}>02</span>
+              <span className={styles.linkLabelNumber}>🌿</span>
               <span className={styles.linkLabelText}>{menuTranslations.care}</span>
             </Link>
             <Link href={`/${lang}/wholesale`} className={styles.overlayLink} onClick={() => setMenuOpen(false)}>
-              <span className={styles.linkLabelNumber}>03</span>
+              <span className={styles.linkLabelNumber}>🏢</span>
               <span className={styles.linkLabelText}>{menuTranslations.wholesale}</span>
             </Link>
             <Link href={`/${lang}#about`} className={styles.overlayLink} onClick={() => setMenuOpen(false)}>
-              <span className={styles.linkLabelNumber}>04</span>
+              <span className={styles.linkLabelNumber}>🌱</span>
               <span className={styles.linkLabelText}>{menuTranslations.about}</span>
             </Link>
             <button
@@ -201,11 +201,11 @@ export default function Header({ lang, dict }: { lang: Locale; dict: any }) {
                 setHistoryOpen(true);
               }}
             >
-              <span className={styles.linkLabelNumber}>05</span>
+              <span className={styles.linkLabelNumber}>📦</span>
               <span className={styles.linkLabelText}>{menuTranslations.myOrders}</span>
             </button>
             <Link href={`/${lang}/privacy`} className={styles.overlayLink} onClick={() => setMenuOpen(false)}>
-              <span className={styles.linkLabelNumber}>06</span>
+              <span className={styles.linkLabelNumber}>🔒</span>
               <span className={styles.linkLabelText}>{menuTranslations.privacy}</span>
             </Link>
           </nav>

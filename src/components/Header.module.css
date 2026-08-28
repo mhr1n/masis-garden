@@ -227,13 +227,12 @@
 }
 
 .linkLabelNumber {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #c5a880; /* Subtle Gold/Sand */
-  margin-right: 20px;
-  font-feature-settings: "tnum";
-  min-width: 24px;
-  letter-spacing: 0.5px;
+  font-size: 1.25rem;
+  margin-right: 16px;
+  min-width: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .linkLabelText {
