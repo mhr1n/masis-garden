@@ -81,18 +81,6 @@ export default function AboutSection({ dict, lang = 'en' }: AboutSectionProps) {
                 </div>
               </div>
             </div>
-
-            {/* Clickable Feature Card 1 (Wholesale & B2B Orders) */}
-            <Link href={`/${lang}/wholesale`} className={`${styles.stretchedCard} ${styles.clickableCard}`}>
-              <span className={styles.pillarIcon}>🌱</span>
-              <div style={{ flex: 1 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
-                  <strong>{dict.aboutUs?.b2bTitle || 'Botanical Mastery & Bulk Supply'}</strong>
-                  <span className={styles.b2bBadge}>{dict.aboutUs?.b2bBadge || '🤝 B2B & Wholesale ↗'}</span>
-                </div>
-                <p>{dict.aboutUs?.b2bText || 'Bulk plant supply & direct imports from Iran to Armenia for shops, online stores & gardens.'}</p>
-              </div>
-            </Link>
           </div>
 
           {/* Right Column: Expanded Story Text + Feature Card 2 */}
@@ -111,18 +99,6 @@ export default function AboutSection({ dict, lang = 'en' }: AboutSectionProps) {
             <p className={styles.description}>
               {dict.aboutUs?.description3 || 'Every plant in our collection is hand-inspected for optimal vitality, potted in nutrient-dense soil, and paired with custom artisanal pottery designed to bring living beauty into every room.'}
             </p>
-
-            {/* Stretched Feature Card 2 — clickable link to Blog */}
-            <Link href={`/${lang}/blog`} className={`${styles.stretchedCard} ${styles.clickableCard}`}>
-              <span className={styles.pillarIcon}>📖</span>
-              <div style={{ flex: 1 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
-                  <strong>{dict.aboutUs?.mossTitle || 'Plant Care Guide'}</strong>
-                  <span className={styles.b2bBadge}>{dict.aboutUs?.blogBadge || '📚 Read Articles ↗'}</span>
-                </div>
-                <p>{dict.aboutUs?.mossText || 'Expert care tips, species guides & decoration ideas from our botanical team.'}</p>
-              </div>
-            </Link>
           </div>
 
         </div>
