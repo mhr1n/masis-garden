@@ -466,10 +466,33 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 12px;
   box-shadow: 0 -4px 40px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0,0,0,0.2);
   max-width: 520px;
   margin: 0 auto;
+}
+
+@media (max-width: 480px) {
+  .phoneToastInner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 18px;
+  }
+
+  .phoneToastInfo {
+    width: 100%;
+  }
+
+  .phoneToastActions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .phoneToastNumber {
+    font-size: 1.05rem;
+  }
 }
 
 .phoneToastInfo {
