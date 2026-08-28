@@ -40,7 +40,7 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Matcher ignoring `/_next/`, `/api/`, and `/admin`
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|admin).*)'],
+  // Matcher ignoring `/_next/`, `/api/`, `/admin`, and `/images/`
+  matcher: ['/((?!api|_next/static|_next/image|images|favicon.ico|admin).*)'],
 };
 
