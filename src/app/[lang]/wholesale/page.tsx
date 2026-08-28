@@ -21,7 +21,7 @@ export default async function WholesalePage({
       {/* Left Column: Image */}
       <div className={styles.imageCol}>
         <img 
-          src="/images/wholesale-poster.jpg" 
+          src="https://wdmmnaygesayufugenzv.supabase.co/storage/v1/object/sign/image/wholesale-poster.jpg?token=eyJraWQiOiJiNTgzYmE2Yy02MzAxLTQzNTQtOTYxNy1iZjU0MmJjM2M3ZWQiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZS93aG9sZXNhbGUtcG9zdGVyLmpwZyIsInNjb3BlIjoiZG93bmxvYWQiLCJpYXQiOjE3ODc3Mjc1MzAsImV4cCI6MTgxOTI2MzUzMH0.D7FZfco_DrOLOeivCLKSKtWBhGJTc5E5E6i2AVrLwsk" 
           alt="Wholesale Poster" 
           className={styles.posterImg}
         />

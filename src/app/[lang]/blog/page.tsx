@@ -17,7 +17,7 @@ export default async function BlogPage({ params }: { params: Promise<{ lang: str
       {/* Left: Poster Image */}
       <div className={styles.imageCol}>
         <img
-          src="/images/plant-care-poster.jpg"
+          src="https://wdmmnaygesayufugenzv.supabase.co/storage/v1/object/sign/image/plant-care-poster.jpg?token=eyJraWQiOiJiNTgzYmE2Yy02MzAxLTQzNTQtOTYxNy1iZjU0MmJjM2M3ZWQiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZS9wbGFudC1jYXJlLXBvc3Rlci5qcGciLCJzY29wZSI6ImRvd25sb2FkIiwiaWF0IjoxNzg3NzI3NTExLCJleHAiOjE4MTkyNjM1MTF9.1GNzQ1gcRp-7FHokJL4XjAXgdamcx7_0LvvBjqS01j4"
           alt="Plant Care Service"
           className={styles.posterImg}
         />
