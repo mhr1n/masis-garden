@@ -58,7 +58,6 @@
   color: var(--color-text);
   line-height: 1.1;
   margin: 0;
-  white-space: nowrap; /* Force one line if possible, though responsive will handle it */
 }
 
 .subtitle {

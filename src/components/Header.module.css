@@ -15,6 +15,12 @@
   height: 100%;
 }
 
+.leftArea {
+  display: flex;
+  align-items: center;
+  gap: 4px; /* Very close spacing as requested */
+}
+
 /* Hamburger button (Mobile only) */
 .hamburgerBtn {
   display: none;

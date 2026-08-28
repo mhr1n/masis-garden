@@ -93,25 +93,28 @@ export default function Header({ lang, dict }: { lang: Locale; dict: any }) {
     <>
       <header className={styles.header}>
         <div className={`container ${styles.headerContainer}`}>
-          {/* Hamburger Menu Button (Mobile only) */}
-          <button
-            className={styles.hamburgerBtn}
-            onClick={() => setMenuOpen(true)}
-            aria-label="Toggle Menu"
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="3" y1="12" x2="21" y2="12" />
-              <line x1="3" y1="6" x2="21" y2="6" />
-              <line x1="3" y1="18" x2="21" y2="18" />
-            </svg>
-          </button>
+          {/* Left Area (Hamburger + Logo) */}
+          <div className={styles.leftArea}>
+            {/* Hamburger Menu Button (Mobile only) */}
+            <button
+              className={styles.hamburgerBtn}
+              onClick={() => setMenuOpen(true)}
+              aria-label="Toggle Menu"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            </button>
 
-          {/* Logo */}
-          <div className={styles.logo}>
-            <a href={`/${lang}`}>
-              Masis Garden
-              <span className={styles.logoLeaf}>🌿</span>
-            </a>
+            {/* Logo */}
+            <div className={styles.logo}>
+              <a href={`/${lang}`}>
+                Masis Garden
+                <span className={styles.logoLeaf}>🌿</span>
+              </a>
+            </div>
           </div>
 
           {/* Desktop Nav */}
