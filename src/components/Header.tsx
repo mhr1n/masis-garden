@@ -21,14 +21,6 @@ export default function Header({ lang, dict }: { lang: Locale; dict: any }) {
     setTimeout(() => setPhoneCopied(false), 2500);
   };
 
-  const navLinks = [
-    { href: `/${lang}`, label: dict.navigation?.home || 'Home' },
-    { href: `/${lang}#catalog`, label: dict.navigation?.category || 'Shop' },
-    { href: `/${lang}/wholesale`, label: dict.navigation?.bulkImport || 'Wholesale' },
-    { href: `/${lang}/blog`, label: dict.navigation?.blog || 'Blog' },
-    { href: `/${lang}#about`, label: dict.navigation?.about || 'About' },
-  ];
-
   const trackLabel = {
     en: 'My Orders',
     am: 'Իմ պատվերները',
@@ -96,6 +88,14 @@ export default function Header({ lang, dict }: { lang: Locale; dict: any }) {
     email: 'Email',
     phone: 'Phone',
   };
+
+  const navLinks = [
+    { href: `/${lang}#catalog`, label: menuTranslations.shop },
+    { href: `/${lang}/blog`, label: menuTranslations.care },
+    { href: `/${lang}/wholesale`, label: menuTranslations.wholesale },
+    { href: `/${lang}#about`, label: menuTranslations.about },
+    { href: `/${lang}/privacy`, label: menuTranslations.privacy },
+  ];
 
   return (
     <>
