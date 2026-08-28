@@ -5,7 +5,7 @@ import { Locale } from '../i18n-config';
 import styles from './Header.module.css';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useCart } from '../context/CartContext';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import OrderHistoryModal from './OrderHistoryModal';
 
 export default function Header({ lang, dict }: { lang: Locale; dict: any }) {
@@ -14,6 +14,18 @@ export default function Header({ lang, dict }: { lang: Locale; dict: any }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [phoneToastOpen, setPhoneToastOpen] = useState(false);
   const [phoneCopied, setPhoneCopied] = useState(false);
+  const [supportOpen, setSupportOpen] = useState(false);
+  const supportRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (supportRef.current && !supportRef.current.contains(event.target as Node)) {
+        setSupportOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleCopyPhone = () => {
     navigator.clipboard.writeText('+374 99 062 409');
@@ -146,7 +158,55 @@ export default function Header({ lang, dict }: { lang: Locale; dict: any }) {
               <span>{trackLabel}</span>
             </button>
 
-            <div className={styles.badge247}>{dict.common?.['24_7'] || '24/7 Support'}</div>
+            <div className={styles.supportDropdown} ref={supportRef}>
+              <button
+                type="button"
+                className={styles.badge247}
+                onClick={() => setSupportOpen(!supportOpen)}
+                aria-expanded={supportOpen}
+              >
+                <span>{dict.common?.['24_7'] || '24/7 Support'}</span>
+                <svg
+                  className={`${styles.supportChevron} ${supportOpen ? styles.supportChevronOpen : ''}`}
+                  width="10"
+                  height="10"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                >
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </button>
+
+              {supportOpen && (
+                <div className={styles.supportMenu}>
+                  <button
+                    type="button"
+                    className={styles.supportItem}
+                    onClick={() => {
+                      setSupportOpen(false);
+                      setPhoneToastOpen(true);
+                    }}
+                  >
+                    <span className={styles.supportItemIcon}>📞</span>
+                    <span className={styles.supportItemText}>
+                      {lang === 'ru' ? 'Номер телефона' : lang === 'am' ? 'Հեռախոս' : 'Phone Number'}
+                    </span>
+                  </button>
+                  <a
+                    href="https://wa.me/37499062409"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.supportItem}
+                    onClick={() => setSupportOpen(false)}
+                  >
+                    <span className={styles.supportItemIcon}>💬</span>
+                    <span className={styles.supportItemText}>WhatsApp</span>
+                  </a>
+                </div>
+              )}
+            </div>
             <LanguageSwitcher currentLang={lang} />
             <button
               className={styles.cartBtn}
