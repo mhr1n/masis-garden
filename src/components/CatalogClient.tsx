@@ -8,7 +8,7 @@ import SidebarFilter, { FilterState, defaultFilters } from './SidebarFilter';
 import ProductCard from './ProductCard';
 import categoryStyles from './CategoryFilterBar.module.css';
 
-export default function CatalogClient({ dict }: { dict: any }) {
+export default function CatalogClient({ dict, lang }: { dict: any; lang?: string }) {
   const { products } = useProducts();
   const { categories } = useCategories();
   const searchParams = useSearchParams();
@@ -111,7 +111,7 @@ export default function CatalogClient({ dict }: { dict: any }) {
           ) : (
             <div className="grid">
               {filtered.map((product) => (
-                <ProductCard key={product.id} product={product} dictionary={dict} />
+                <ProductCard key={product.id} product={product} dictionary={dict} lang={lang} />
               ))}
             </div>
           )}

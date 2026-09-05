@@ -16,16 +16,17 @@ const LIGHT_MAP: Record<string, { icon: string; label: string }> = {
 interface Props {
   product: Product;
   dictionary: any;
+  lang?: string;
   onClose: () => void;
 }
 
-export default function ProductModal({ product, dictionary, onClose }: Props) {
+export default function ProductModal({ product, dictionary, lang: propLang, onClose }: Props) {
   const { addToCart, setIsCartOpen } = useCart();
   const params = useParams();
-  const lang = (params?.lang as string) || 'en';
+  const lang = propLang || (params?.lang as string) || 'en';
 
   const localizedName = lang === 'ru' && product.nameRu ? product.nameRu 
-                      : lang === 'am' && product.nameAm ? product.nameAm 
+                      : lang === 'am' && (product.nameAm || product.armenianName) ? (product.nameAm || product.armenianName) 
                       : product.name;
   
   const localizedDescription = lang === 'ru' && product.descriptionRu ? product.descriptionRu 
@@ -164,7 +165,7 @@ export default function ProductModal({ product, dictionary, onClose }: Props) {
             {product.botanicalName && (
               <p className={styles.botanical}><em>{product.botanicalName}</em></p>
             )}
-            {product.armenianName && (
+            {lang === 'en' && product.armenianName && product.armenianName !== localizedName && (
               <p className={styles.armenian}>{product.armenianName}</p>
             )}
             <h2 className={styles.name}>{localizedName}</h2>

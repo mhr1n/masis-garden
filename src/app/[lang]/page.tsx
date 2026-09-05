@@ -102,7 +102,7 @@ export default async function Home({
         </div>
 
         <Suspense fallback={<div style={{textAlign: 'center', padding: '50px'}}>Loading...</div>}>
-          <CatalogClient dict={dict} />
+          <CatalogClient dict={dict} lang={lang} />
         </Suspense>
       </section>
 

@@ -44,16 +44,17 @@ const LIGHT_LABEL: Record<string, string> = {
 interface ProductCardProps {
   product: Product;
   dictionary: any;
+  lang?: string;
 }
 
-export default function ProductCard({ product, dictionary }: ProductCardProps) {
+export default function ProductCard({ product, dictionary, lang }: ProductCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { addToCart } = useCart();
   const params = useParams();
-  const lang = (params?.lang as string) || 'en';
+  const currentLang = lang || (params?.lang as string) || 'en';
 
-  const localizedName = lang === 'ru' && product.nameRu ? product.nameRu 
-                      : lang === 'am' && product.nameAm ? product.nameAm 
+  const localizedName = currentLang === 'ru' && product.nameRu ? product.nameRu 
+                      : currentLang === 'am' && (product.nameAm || product.armenianName) ? (product.nameAm || product.armenianName) 
                       : product.name;
 
   const primaryTag = product.tags?.[0];
@@ -171,6 +172,7 @@ export default function ProductCard({ product, dictionary }: ProductCardProps) {
         <ProductModal
           product={product}
           dictionary={dictionary}
+          lang={currentLang}
           onClose={() => setIsModalOpen(false)}
         />
       )}
