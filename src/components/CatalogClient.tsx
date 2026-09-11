@@ -42,6 +42,19 @@ export default function CatalogClient({ dict, lang }: { dict: any; lang?: string
     }
   };
 
+  const getCategoryName = (cat: { id: string; name: string }) => {
+    const map: Record<string, string> = {
+      all: dict.filter?.allCategories,
+      plant: dict.filter?.plantsLabel,
+      pot: dict.filter?.potsLabel,
+      moss: dict.filter?.mossLabel,
+      decor: dict.filter?.decorLabel,
+      gift: dict.filter?.giftsLabel,
+      lux: dict.filter?.luxLabel,
+    };
+    return map[cat.id] || cat.name;
+  };
+
   const categoryList = useMemo(() => [
     { id: 'all', name: dict.filter?.allCategories || 'All Products', emoji: '🌿' },
     ...categories,
@@ -91,7 +104,7 @@ export default function CatalogClient({ dict, lang }: { dict: any; lang?: string
             onClick={() => handleCategorySelect(cat.id)}
           >
             <span className={categoryStyles.icon}>{cat.emoji}</span>
-            <span>{cat.name}</span>
+            <span>{getCategoryName(cat)}</span>
           </button>
         ))}
       </div>
