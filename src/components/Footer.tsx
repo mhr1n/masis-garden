@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Locale } from '../i18n-config';
 import { getDictionary } from '../get-dictionary';
+import IconMasis from './IconMasis';
 import styles from './Footer.module.css';
 
 export default async function Footer({ lang }: { lang: Locale }) {
@@ -11,7 +12,10 @@ export default async function Footer({ lang }: { lang: Locale }) {
       <div className={`container ${styles.footerGrid}`}>
         {/* Brand */}
         <div className={styles.brand}>
-          <h3>🌿 Masis Garden</h3>
+          <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <IconMasis style={{ width: '36px', height: 'auto', marginBottom: '-4px' }} />
+            Masis Garden
+          </h3>
           <p>{dict.footer.tagline}</p>
         </div>
 

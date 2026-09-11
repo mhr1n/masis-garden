@@ -1,10 +1,11 @@
-'use client';
+﻿'use client';
 
 import Link from 'next/link';
 import { Locale } from '../i18n-config';
 import styles from './Header.module.css';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useCart } from '../context/CartContext';
+import IconMasis from './IconMasis';
 import { useState, useEffect, useRef } from 'react';
 import OrderHistoryModal from './OrderHistoryModal';
 
@@ -35,8 +36,8 @@ export default function Header({ lang, dict }: { lang: Locale; dict: any }) {
 
   const trackLabel = {
     en: 'My Orders',
-    am: 'Իմ պատվերները',
-    ru: 'Мои заказы',
+    am: 'Ô»Õ´ ÕºÕ¡Õ¿Õ¾Õ¥Ö€Õ¶Õ¥Ö€Õ¨',
+    ru: 'ÐœÐ¾Ð¸ Ð·Ð°ÐºÐ°Ð·Ñ‹',
   }[lang] || 'My Orders';
 
   const menuTranslations = {
@@ -56,34 +57,34 @@ export default function Header({ lang, dict }: { lang: Locale; dict: any }) {
       phone: 'Phone',
     },
     am: {
-      shop: 'Խանութ',
-      care: 'Խնամք',
-      wholesale: 'Մեծածախ',
-      about: 'Մեր մասին',
+      shop: 'Ô½Õ¡Õ¶Õ¸Ö‚Õ©',
+      care: 'Ô½Õ¶Õ¡Õ´Ö„',
+      wholesale: 'Õ„Õ¥Õ®Õ¡Õ®Õ¡Õ­',
+      about: 'Õ„Õ¥Ö€ Õ´Õ¡Õ½Õ«Õ¶',
       myOrders: trackLabel,
-      privacy: 'Գաղտնիություն',
-      contact: 'Կապ Մեզ Հետ',
+      privacy: 'Ô³Õ¡Õ²Õ¿Õ¶Õ«Õ¸Ö‚Õ©ÕµÕ¸Ö‚Õ¶',
+      contact: 'Ô¿Õ¡Õº Õ„Õ¥Õ¦ Õ€Õ¥Õ¿',
       whatsapp: 'WhatsApp',
       telegram: 'Telegram',
       instagram: 'Instagram',
       facebook: 'Facebook',
-      email: 'Էլ. Փոստ',
-      phone: 'Հեռախոս',
+      email: 'Ô·Õ¬. Õ“Õ¸Õ½Õ¿',
+      phone: 'Õ€Õ¥Õ¼Õ¡Õ­Õ¸Õ½',
     },
     ru: {
-      shop: 'Магазин',
-      care: 'Уход за растениями',
-      wholesale: 'Оптовые поставки',
-      about: 'О нас',
+      shop: 'ÐœÐ°Ð³Ð°Ð·Ð¸Ð½',
+      care: 'Ð£Ñ…Ð¾Ð´ Ð·Ð° Ñ€Ð°ÑÑ‚ÐµÐ½Ð¸ÑÐ¼Ð¸',
+      wholesale: 'ÐžÐ¿Ñ‚Ð¾Ð²Ñ‹Ðµ Ð¿Ð¾ÑÑ‚Ð°Ð²ÐºÐ¸',
+      about: 'Ðž Ð½Ð°Ñ',
       myOrders: trackLabel,
-      privacy: 'Конфиденциальность',
-      contact: 'Связаться с нами',
+      privacy: 'ÐšÐ¾Ð½Ñ„Ð¸Ð´ÐµÐ½Ñ†Ð¸Ð°Ð»ÑŒÐ½Ð¾ÑÑ‚ÑŒ',
+      contact: 'Ð¡Ð²ÑÐ·Ð°Ñ‚ÑŒÑÑ Ñ Ð½Ð°Ð¼Ð¸',
       whatsapp: 'WhatsApp',
       telegram: 'Telegram',
       instagram: 'Instagram',
       facebook: 'Facebook',
       email: 'Email',
-      phone: 'Телефон',
+      phone: 'Ð¢ÐµÐ»ÐµÑ„Ð¾Ð½',
     }
   }[lang as 'en' | 'am' | 'ru'] || {
     shop: 'Shop',
@@ -132,7 +133,7 @@ export default function Header({ lang, dict }: { lang: Locale; dict: any }) {
             <div className={styles.logo}>
               <a href={`/${lang}`}>
                 Masis Garden
-                <span className={styles.logoLeaf}>🌿</span>
+                <IconMasis className={styles.logoLeaf} style={{ width: '40px', height: 'auto', marginBottom: '-4px' }} />
               </a>
             </div>
           </div>
@@ -154,7 +155,7 @@ export default function Header({ lang, dict }: { lang: Locale; dict: any }) {
               onClick={() => setHistoryOpen(true)}
               title="Track Orders & History"
             >
-              <span>📦</span>
+              <span>ðŸ“¦</span>
               <span>{trackLabel}</span>
             </button>
 
@@ -189,9 +190,9 @@ export default function Header({ lang, dict }: { lang: Locale; dict: any }) {
                       setPhoneToastOpen(true);
                     }}
                   >
-                    <span className={styles.supportItemIcon}>📞</span>
+                    <span className={styles.supportItemIcon}>ðŸ“ž</span>
                     <span className={styles.supportItemText}>
-                      {lang === 'ru' ? 'Номер телефона' : lang === 'am' ? 'Հեռախոս' : 'Phone Number'}
+                      {lang === 'ru' ? 'ÐÐ¾Ð¼ÐµÑ€ Ñ‚ÐµÐ»ÐµÑ„Ð¾Ð½Ð°' : lang === 'am' ? 'Õ€Õ¥Õ¼Õ¡Õ­Õ¸Õ½' : 'Phone Number'}
                     </span>
                   </button>
                   <a
@@ -201,7 +202,7 @@ export default function Header({ lang, dict }: { lang: Locale; dict: any }) {
                     className={styles.supportItem}
                     onClick={() => setSupportOpen(false)}
                   >
-                    <span className={styles.supportItemIcon}>💬</span>
+                    <span className={styles.supportItemIcon}>ðŸ’¬</span>
                     <span className={styles.supportItemText}>WhatsApp</span>
                   </a>
                 </div>
@@ -229,7 +230,7 @@ export default function Header({ lang, dict }: { lang: Locale; dict: any }) {
           <div className={styles.logo}>
             <Link href={`/${lang}`} onClick={() => setMenuOpen(false)}>
               Masis Garden
-              <span className={styles.logoLeaf}>🌿</span>
+              <IconMasis className={styles.logoLeaf} style={{ width: '40px', height: 'auto', marginBottom: '-4px' }} />
             </Link>
           </div>
           <button
@@ -247,19 +248,19 @@ export default function Header({ lang, dict }: { lang: Locale; dict: any }) {
         <div className={styles.overlayBody}>
           <nav className={styles.overlayNav}>
             <Link href={`/${lang}#catalog`} className={styles.overlayLink} onClick={() => setMenuOpen(false)}>
-              <span className={styles.linkLabelNumber}>🛍️</span>
+              <span className={styles.linkLabelNumber}>ðŸ›ï¸</span>
               <span className={styles.linkLabelText}>{menuTranslations.shop}</span>
             </Link>
             <Link href={`/${lang}/blog`} className={styles.overlayLink} onClick={() => setMenuOpen(false)}>
-              <span className={styles.linkLabelNumber}>🌿</span>
+              <span className={styles.linkLabelNumber}>ðŸŒ¿</span>
               <span className={styles.linkLabelText}>{menuTranslations.care}</span>
             </Link>
             <Link href={`/${lang}/wholesale`} className={styles.overlayLink} onClick={() => setMenuOpen(false)}>
-              <span className={styles.linkLabelNumber}>🏢</span>
+              <span className={styles.linkLabelNumber}>ðŸ¢</span>
               <span className={styles.linkLabelText}>{menuTranslations.wholesale}</span>
             </Link>
             <Link href={`/${lang}#about`} className={styles.overlayLink} onClick={() => setMenuOpen(false)}>
-              <span className={styles.linkLabelNumber}>🌱</span>
+              <span className={styles.linkLabelNumber}>ðŸŒ±</span>
               <span className={styles.linkLabelText}>{menuTranslations.about}</span>
             </Link>
             <button
@@ -269,11 +270,11 @@ export default function Header({ lang, dict }: { lang: Locale; dict: any }) {
                 setHistoryOpen(true);
               }}
             >
-              <span className={styles.linkLabelNumber}>📦</span>
+              <span className={styles.linkLabelNumber}>ðŸ“¦</span>
               <span className={styles.linkLabelText}>{menuTranslations.myOrders}</span>
             </button>
             <Link href={`/${lang}/privacy`} className={styles.overlayLink} onClick={() => setMenuOpen(false)}>
-              <span className={styles.linkLabelNumber}>🔒</span>
+              <span className={styles.linkLabelNumber}>ðŸ”’</span>
               <span className={styles.linkLabelText}>{menuTranslations.privacy}</span>
             </Link>
           </nav>
@@ -340,7 +341,7 @@ export default function Header({ lang, dict }: { lang: Locale; dict: any }) {
       <div className={`${styles.phoneToast} ${phoneToastOpen ? styles.phoneToastOpen : ''}`}>
         <div className={styles.phoneToastInner}>
           <div className={styles.phoneToastInfo}>
-            <span className={styles.phoneToastIcon}>📞</span>
+            <span className={styles.phoneToastIcon}>ðŸ“ž</span>
             <div>
               <div className={styles.phoneToastLabel}>Masis Garden</div>
               <div className={styles.phoneToastNumber}>+374 99 062 409</div>
@@ -366,10 +367,11 @@ export default function Header({ lang, dict }: { lang: Locale; dict: any }) {
               </svg>
               <span>Call</span>
             </a>
-            <button className={styles.phoneCloseBtn} onClick={() => setPhoneToastOpen(false)}>✕</button>
+            <button className={styles.phoneCloseBtn} onClick={() => setPhoneToastOpen(false)}>âœ•</button>
           </div>
         </div>
       </div>
     </>
   );
 }
+
