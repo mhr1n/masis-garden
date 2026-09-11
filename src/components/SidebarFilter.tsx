@@ -117,16 +117,16 @@ export default function SidebarFilter({ filters, onChange, dict, resultCount }: 
   ];
 
   const wateringOptions = [
-    { key: 'low', label: '🌵 Low Water (Every 2–3 weeks)' },
-    { key: 'medium', label: '💧 Regular Water (Once a week)' },
-    { key: 'high', label: '🌊 Frequent Water (Keep moist)' },
+    { key: 'low', label: '🌵 ' + (dict.filter?.watering_low || 'Low Water (Every 2–3 weeks)') },
+    { key: 'medium', label: '💧 ' + (dict.filter?.watering_medium || 'Regular Water (Once a week)') },
+    { key: 'high', label: '🌊 ' + (dict.filter?.watering_high || 'Frequent Water (Keep moist)') },
   ];
 
   const sizeOptions = [
-    { key: 'S', label: '🪴 Small (S)' },
-    { key: 'M', label: '🌿 Medium (M)' },
-    { key: 'L', label: '🌳 Large (L)' },
-    { key: 'XL', label: '🌴 Extra Large (XL)' },
+    { key: 'S', label: '🪴 ' + (dict.filter?.size_s || 'Small (S)') },
+    { key: 'M', label: '🌿 ' + (dict.filter?.size_m || 'Medium (M)') },
+    { key: 'L', label: '🌳 ' + (dict.filter?.size_l || 'Large (L)') },
+    { key: 'XL', label: '🌴 ' + (dict.filter?.size_xl || 'Extra Large (XL)') },
   ];
 
   return (

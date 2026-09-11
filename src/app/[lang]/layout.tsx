@@ -45,7 +45,7 @@ export default async function RootLayout({
       <body>
         <Providers>
           <Header lang={lang as Locale} dict={dict} />
-          <CartDrawer dict={dict} />
+          <CartDrawer dict={dict} lang={lang} />
           <main>{children}</main>
           <Footer lang={lang as Locale} />
         </Providers>

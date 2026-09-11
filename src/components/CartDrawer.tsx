@@ -5,10 +5,14 @@ import { useCart } from '../context/CartContext';
 import CheckoutModal from './CheckoutModal';
 import styles from './CartDrawer.module.css';
 
-export default function CartDrawer({ dict }: { dict: any }) {
+import { useParams } from 'next/navigation';
+
+export default function CartDrawer({ dict, lang: propLang }: { dict: any; lang?: string }) {
   const { isCartOpen, setIsCartOpen, items, removeFromCart } = useCart();
   const drawerRef = useRef<HTMLDivElement>(null);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const params = useParams();
+  const currentLang = propLang || (params?.lang as string) || 'en';
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -56,19 +60,25 @@ export default function CartDrawer({ dict }: { dict: any }) {
             </div>
           ) : (
             <div className={styles.itemsList}>
-              {items.map((item) => (
+              {items.map((item) => {
+                const localizedName =
+                  currentLang === 'ru' && item.nameRu ? item.nameRu :
+                  currentLang === 'am' && (item.nameAm || item.armenianName) ? (item.nameAm || item.armenianName) :
+                  item.name;
+
+                return (
                 <div key={item.cartId} className={styles.cartItem}>
                   <div className={styles.itemImage}>
                     {item.images?.[0] && (
                       <img
                         src={item.images[0]}
-                        alt={item.name}
+                        alt={localizedName}
                         style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }}
                       />
                     )}
                   </div>
                   <div className={styles.itemDetails}>
-                    <h4>{item.name}</h4>
+                    <h4>{localizedName}</h4>
                     {(() => {
                       const orig = item.originalPrice ?? 0;
                       const cur = item.price;
@@ -104,7 +114,8 @@ export default function CartDrawer({ dict }: { dict: any }) {
                     </svg>
                   </button>
                 </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
@@ -130,6 +141,7 @@ export default function CartDrawer({ dict }: { dict: any }) {
         isOpen={isCheckoutOpen}
         onClose={() => setIsCheckoutOpen(false)}
         dict={dict}
+        lang={currentLang}
       />
     </>
   );

@@ -11,15 +11,17 @@ interface CheckoutModalProps {
   isOpen: boolean;
   onClose: () => void;
   dict: any;
+  lang?: string;
 }
 
-export default function CheckoutModal({ isOpen, onClose, dict }: CheckoutModalProps) {
+export default function CheckoutModal({ isOpen, onClose, dict, lang = 'en' }: CheckoutModalProps) {
   const { items, cartCount, clearCart } = useCart();
   const { addOrder } = useOrders();
   const { validatePromo } = usePromos();
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('online');
+  const [copied, setCopied] = useState(false);
   const [promoCodeInput, setPromoCodeInput] = useState('');
   const [appliedPromo, setAppliedPromo] = useState<PromoCode | null>(null);
   const [promoError, setPromoError] = useState('');
@@ -165,10 +167,10 @@ export default function CheckoutModal({ isOpen, onClose, dict }: CheckoutModalPr
         {submitted ? (
           <div className={styles.success}>
             <div className={styles.successIcon}>🌿</div>
-            <h3>Order Confirmed!</h3>
-            <p>Thank you! We will contact you shortly to confirm delivery details.</p>
+            <h3>{dict.checkout.orderConfirmed}</h3>
+            <p>{dict.checkout.thankYouMsg}</p>
             <button className="btn-primary" style={{ marginTop: '8px' }} onClick={onClose}>
-              Continue Shopping
+              {dict.checkout.continueShopping}
             </button>
           </div>
         ) : (
@@ -177,17 +179,23 @@ export default function CheckoutModal({ isOpen, onClose, dict }: CheckoutModalPr
 
               {/* ── Left: Order Summary ── */}
               <div className={styles.summary}>
-                <h3>📋 Order Summary ({cartCount})</h3>
+                <h3>📋 {dict.checkout.orderSummary} ({cartCount})</h3>
 
-                {items.map((item) => (
+                {items.map((item) => {
+                  const localizedName =
+                    lang === 'ru' && item.nameRu ? item.nameRu :
+                    lang === 'am' && (item.nameAm || item.armenianName) ? (item.nameAm || item.armenianName) :
+                    item.name;
+
+                  return (
                   <div key={item.cartId} className={styles.orderItem}>
                     <div className={styles.itemThumb}>
-                      {item.images?.[0] && <img src={item.images[0]} alt={item.name} />}
+                      {item.images?.[0] && <img src={item.images[0]} alt={localizedName} />}
                     </div>
                     <div className={styles.itemInfo}>
-                      <h4>{item.name}</h4>
+                      <h4>{localizedName}</h4>
                       <p className={styles.itemMeta}>
-                        {item.selectedSize && `Size: ${item.selectedSize}`}
+                        {item.selectedSize && `${dict.common.size || 'Size'}: ${item.selectedSize}`}
                         {item.selectedSize && item.selectedColor && ' · '}
                         {item.selectedColor}
                       </p>
@@ -210,7 +218,8 @@ export default function CheckoutModal({ isOpen, onClose, dict }: CheckoutModalPr
                       );
                     })()}
                   </div>
-                ))}
+                  );
+                })}
 
                 <div className={styles.totalRow}>
                   <span className={styles.totalLabel}>{dict.common.total}</span>
@@ -221,16 +230,16 @@ export default function CheckoutModal({ isOpen, onClose, dict }: CheckoutModalPr
                   <div className={styles.promoInputGroup}>
                     <input 
                       type="text" 
-                      placeholder="Promo Code" 
+                      placeholder={dict.checkout.promoCode || "Promo Code"} 
                       value={promoCodeInput}
                       onChange={e => setPromoCodeInput(e.target.value)}
                     />
-                    <button type="button" className={styles.promoApplyBtn} onClick={handleApplyPromo}>Apply</button>
+                    <button type="button" className={styles.promoApplyBtn} onClick={handleApplyPromo}>{dict.checkout.apply}</button>
                   </div>
-                  {promoError && <div style={{ color: '#e05252', fontSize: '0.8rem', marginTop: '4px' }}>{promoError}</div>}
+                  {promoError && <div style={{ color: '#e05252', fontSize: '0.8rem', marginTop: '4px' }}>{dict.checkout.invalidPromo}</div>}
                   {appliedPromo && (
                     <div className={styles.discountRow}>
-                      <span>Discount ({appliedPromo.code})</span>
+                      <span>{dict.checkout.discount} ({appliedPromo.code})</span>
                       <span>-{discountAmount.toLocaleString()} ֏</span>
                     </div>
                   )}
@@ -239,12 +248,12 @@ export default function CheckoutModal({ isOpen, onClose, dict }: CheckoutModalPr
 
               {/* ── Right: Delivery Form ── */}
               <div className={styles.form} style={{ overflowY: 'auto' }}>
-                <h3>🚚 Delivery Details</h3>
+                <h3>🚚 {dict.checkout.deliveryDetails}</h3>
 
                 <div className={styles.formRow}>
                   <div className={styles.formGroup}>
                     <label htmlFor="co-firstName">
-                      First Name <span className={styles.required}>*</span>
+                      {dict.checkout.firstName} <span className={styles.required}>*</span>
                     </label>
                     <input
                       id="co-firstName"
@@ -258,7 +267,7 @@ export default function CheckoutModal({ isOpen, onClose, dict }: CheckoutModalPr
                   </div>
                   <div className={styles.formGroup}>
                     <label htmlFor="co-lastName">
-                      Last Name <span className={styles.required}>*</span>
+                      {dict.checkout.lastName} <span className={styles.required}>*</span>
                     </label>
                     <input
                       id="co-lastName"
@@ -275,7 +284,7 @@ export default function CheckoutModal({ isOpen, onClose, dict }: CheckoutModalPr
                 <div className={styles.formRow}>
                   <div className={styles.formGroup}>
                     <label htmlFor="co-phone">
-                      Phone <span className={styles.required}>*</span>
+                      {dict.checkout.phone} <span className={styles.required}>*</span>
                     </label>
                     <input
                       id="co-phone"
@@ -288,7 +297,7 @@ export default function CheckoutModal({ isOpen, onClose, dict }: CheckoutModalPr
                     />
                   </div>
                   <div className={styles.formGroup}>
-                    <label htmlFor="co-email">Email</label>
+                    <label htmlFor="co-email">{dict.checkout.email}</label>
                     <input
                       id="co-email"
                       name="email"
@@ -302,7 +311,7 @@ export default function CheckoutModal({ isOpen, onClose, dict }: CheckoutModalPr
 
                 <div className={styles.formRow}>
                   <div className={styles.formGroup}>
-                    <label htmlFor="co-city">City</label>
+                    <label htmlFor="co-city">{dict.checkout.city}</label>
                     <input
                       id="co-city"
                       name="city"
@@ -314,13 +323,13 @@ export default function CheckoutModal({ isOpen, onClose, dict }: CheckoutModalPr
                   </div>
                   <div className={styles.formGroup}>
                     <label htmlFor="co-address">
-                      Address <span className={styles.required}>*</span>
+                      {dict.checkout.address} <span className={styles.required}>*</span>
                     </label>
                     <input
                       id="co-address"
                       name="address"
                       type="text"
-                      placeholder="Street, building, apt..."
+                      placeholder={dict.checkout.addressPlaceholder}
                       value={form.address}
                       onChange={handleChange}
                       required
@@ -331,41 +340,41 @@ export default function CheckoutModal({ isOpen, onClose, dict }: CheckoutModalPr
                 <div className={styles.formGroup}>
                   <label className={styles.giftToggle}>
                     <input type="checkbox" checked={form.isGift} onChange={e => setForm({...form, isGift: e.target.checked})} />
-                    🎁 Send as a Gift
+                    🎁 {dict.checkout.sendAsGift}
                   </label>
                   {form.isGift && (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '12px', background: '#fafaf8', border: '1px solid #f0ebe2', borderRadius: '8px', marginBottom: '8px' }}>
-                      <input type="text" placeholder="Receiver Name" value={form.giftReceiverName} onChange={e => setForm({...form, giftReceiverName: e.target.value})} style={{ padding: '8px', border: '1px solid #e0d8c8', borderRadius: '6px' }} />
-                      <textarea placeholder="Custom Greeting Card Text..." value={form.giftMessage} onChange={e => setForm({...form, giftMessage: e.target.value})} style={{ padding: '8px', border: '1px solid #e0d8c8', borderRadius: '6px', resize: 'none', height: '60px' }} />
+                      <input type="text" placeholder={dict.checkout.receiverName} value={form.giftReceiverName} onChange={e => setForm({...form, giftReceiverName: e.target.value})} style={{ padding: '8px', border: '1px solid #e0d8c8', borderRadius: '6px' }} />
+                      <textarea placeholder={dict.checkout.cardMessage} value={form.giftMessage} onChange={e => setForm({...form, giftMessage: e.target.value})} style={{ padding: '8px', border: '1px solid #e0d8c8', borderRadius: '6px', resize: 'none', height: '60px' }} />
                     </div>
                   )}
                 </div>
 
                 <div className={styles.formGroup}>
-                  <label htmlFor="co-note">Note for delivery</label>
+                  <label htmlFor="co-note">{dict.checkout.deliveryNote}</label>
                   <textarea
                     id="co-note"
                     name="note"
-                    placeholder="Any special instructions..."
+                    placeholder={dict.checkout.notePlaceholder}
                     value={form.note}
                     onChange={handleChange}
                   />
                 </div>
 
-                <h3 style={{ marginTop: '20px' }}>💳 Payment Method</h3>
+                <h3 style={{ marginTop: '20px' }}>💳 {dict.checkout.paymentMethod}</h3>
                 <div className={styles.paymentTabs}>
-                  <button type="button" className={`${styles.paymentTab} ${paymentMethod === 'online' ? styles.active : ''}`} onClick={() => setPaymentMethod('online')}>💳 Online</button>
-                  <button type="button" className={`${styles.paymentTab} ${paymentMethod === 'cod' ? styles.active : ''}`} onClick={() => setPaymentMethod('cod')}>💵 Cash</button>
-                  <button type="button" className={`${styles.paymentTab} ${paymentMethod === 'bank_transfer' ? styles.active : ''}`} onClick={() => setPaymentMethod('bank_transfer')}>🏦 Transfer</button>
+                  <button type="button" className={`${styles.paymentTab} ${paymentMethod === 'online' ? styles.active : ''}`} onClick={() => setPaymentMethod('online')}>💳 {dict.checkout.paymentOnline}</button>
+                  <button type="button" className={`${styles.paymentTab} ${paymentMethod === 'cod' ? styles.active : ''}`} onClick={() => setPaymentMethod('cod')}>💵 {dict.checkout.paymentCash}</button>
+                  <button type="button" className={`${styles.paymentTab} ${paymentMethod === 'bank_transfer' ? styles.active : ''}`} onClick={() => setPaymentMethod('bank_transfer')}>🏦 {dict.checkout.paymentTransfer}</button>
                 </div>
                 
                 {paymentMethod === 'online' && (
                   <div style={{ padding: '16px', background: '#f0f4ec', border: '1.5px solid #c8dcb8', borderRadius: '12px', marginBottom: '16px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', color: '#2d4520', fontWeight: 'bold', fontSize: '0.9rem' }}>
-                      <span>🏛️ Armenian Merchant Gateway (Fast Bank)</span>
+                      <span>🏛️ {dict.checkout.onlineGatewayTitle}</span>
                     </div>
                     <p style={{ margin: '0 0 10px 0', fontSize: '0.82rem', color: '#4a603c', lineHeight: '1.4' }}>
-                      Upon clicking place order, you will be redirected to the secure bank merchant gateway (<strong>Fast Bank / AmeriaBank / Telcell / Idram</strong>) to complete your online payment.
+                      {dict.checkout.onlineGatewayDesc}
                     </p>
                     <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
                       <span style={{ fontSize: '0.75rem', background: '#fff', padding: '4px 8px', borderRadius: '6px', border: '1px solid #d4e2c8', fontWeight: 'bold', color: '#2d4520' }}>🏦 Fast Bank</span>
@@ -377,14 +386,48 @@ export default function CheckoutModal({ isOpen, onClose, dict }: CheckoutModalPr
                 )}
                 {paymentMethod === 'cod' && (
                   <div style={{ padding: '12px', background: '#e8f0e2', borderRadius: '8px', color: '#3a4f38', fontSize: '0.85rem', marginBottom: '16px' }}>
-                    You will pay in cash or via POS terminal upon delivery.
+                    {dict.checkout.cashDesc}
                   </div>
                 )}
                 {paymentMethod === 'bank_transfer' && (
-                  <div style={{ padding: '12px', background: '#f5f0e8', borderRadius: '8px', color: '#555', fontSize: '0.85rem', marginBottom: '16px' }}>
-                    <p style={{ margin: '0 0 8px 0' }}><strong>IBAN:</strong> AM123456789000000000</p>
-                    <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '4px' }}>Upload Receipt:</label>
-                    <input type="file" accept="image/*" style={{ fontSize: '0.8rem' }} />
+                  <div style={{ padding: '16px', background: '#f5f0e8', borderRadius: '12px', color: '#555', fontSize: '0.85rem', marginBottom: '16px', border: '1px solid #e0d8c8' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#fff', padding: '10px 14px', borderRadius: '8px', border: '1px solid #e0d8c8', marginBottom: '16px' }}>
+                      <div>
+                        <strong style={{ color: '#2d4520', display: 'block', marginBottom: '4px', fontSize: '0.9rem' }}>AMERIA BANK</strong>
+                        <span style={{ fontSize: '1rem', letterSpacing: '1px', color: '#333' }}>9051195200334701</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText('9051195200334701');
+                          setCopied(true);
+                          setTimeout(() => setCopied(false), 2000);
+                        }}
+                        style={{
+                          background: copied ? '#4a603c' : '#f0ebe2',
+                          color: copied ? '#fff' : '#4a603c',
+                          border: 'none',
+                          padding: '8px 12px',
+                          borderRadius: '6px',
+                          cursor: 'pointer',
+                          fontSize: '0.8rem',
+                          fontWeight: 'bold',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          transition: 'all 0.2s',
+                          boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+                        }}
+                      >
+                        {copied ? (
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+                        ) : (
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                        )}
+                      </button>
+                    </div>
+                    <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '6px', color: '#3a4f38' }}>{dict.checkout.uploadReceipt}</label>
+                    <input type="file" accept="image/*" style={{ fontSize: '0.8rem', width: '100%', padding: '8px', background: '#fff', border: '1px solid #e0d8c8', borderRadius: '6px' }} />
                   </div>
                 )}
 
@@ -394,7 +437,7 @@ export default function CheckoutModal({ isOpen, onClose, dict }: CheckoutModalPr
             {/* ── Footer ── */}
             <div className={styles.footer}>
               <button type="button" className={styles.cancelBtn} onClick={onClose}>
-                Cancel
+                {dict.checkout.cancel}
               </button>
               <button
                 type="submit"
@@ -407,11 +450,11 @@ export default function CheckoutModal({ isOpen, onClose, dict }: CheckoutModalPr
                       style={{ animation: 'spin 1s linear infinite' }}>
                       <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
                     </svg>
-                    Processing...
+                    {dict.checkout.processing}
                   </>
                 ) : (
                   <>
-                    {paymentMethod === 'online' ? `Pay via Bank Gateway · ${total.toLocaleString()} ֏` : `Place Order · ${total.toLocaleString()} ֏`}
+                    {paymentMethod === 'online' ? `${dict.checkout.payViaGateway} · ${total.toLocaleString()} ֏` : `${dict.checkout.placeOrder} · ${total.toLocaleString()} ֏`}
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                       <path d="M5 12h14M12 5l7 7-7 7"/>
                     </svg>
