@@ -8,7 +8,7 @@ import styles from './CartDrawer.module.css';
 import { useParams } from 'next/navigation';
 
 export default function CartDrawer({ dict, lang: propLang }: { dict: any; lang?: string }) {
-  const { isCartOpen, setIsCartOpen, items, removeFromCart } = useCart();
+  const { isCartOpen, setIsCartOpen, items, removeFromCart, updateQuantity } = useCart();
   const drawerRef = useRef<HTMLDivElement>(null);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const params = useParams();
@@ -27,7 +27,7 @@ export default function CartDrawer({ dict, lang: propLang }: { dict: any; lang?:
     const cur = item.price;
     const hasDiscount = orig > 0 && orig !== cur;
     const effectivePrice = hasDiscount ? Math.min(orig, cur) : cur;
-    return sum + effectivePrice;
+    return sum + (effectivePrice * (item.quantity || 1));
   }, 0);
 
   const handleCheckout = () => {
@@ -47,7 +47,7 @@ export default function CartDrawer({ dict, lang: propLang }: { dict: any; lang?:
         ref={drawerRef}
       >
         <div className={styles.header}>
-          <h2>{dict.common.cart} ({items.length})</h2>
+          <h2>{dict.common.cart} ({items.reduce((sum, item) => sum + (item.quantity || 1), 0)})</h2>
           <button className={styles.closeBtn} onClick={() => setIsCartOpen(false)}>
             &times;
           </button>
@@ -103,6 +103,21 @@ export default function CartDrawer({ dict, lang: propLang }: { dict: any; lang?:
                         {item.selectedColor}
                       </p>
                     )}
+                    
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '6px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', background: '#f5f0e8', borderRadius: '6px', border: '1px solid #e0d8c8' }}>
+                        <button 
+                          onClick={() => updateQuantity(item.cartId, (item.quantity || 1) - 1)} 
+                          disabled={(item.quantity || 1) <= 1}
+                          style={{ width: '28px', height: '28px', background: 'transparent', border: 'none', cursor: (item.quantity || 1) <= 1 ? 'not-allowed' : 'pointer', fontSize: '1rem', color: (item.quantity || 1) <= 1 ? '#aaa' : '#333' }}
+                        >-</button>
+                        <span style={{ width: '24px', textAlign: 'center', fontSize: '0.85rem', fontWeight: 'bold' }}>{item.quantity || 1}</span>
+                        <button 
+                          onClick={() => updateQuantity(item.cartId, (item.quantity || 1) + 1)}
+                          style={{ width: '28px', height: '28px', background: 'transparent', border: 'none', cursor: 'pointer', fontSize: '1rem', color: '#333' }}
+                        >+</button>
+                      </div>
+                    </div>
                   </div>
                   <button
                     className={styles.removeBtn}

@@ -44,7 +44,7 @@ export default function CheckoutModal({ isOpen, onClose, dict, lang = 'en' }: Ch
     const cur = item.price;
     const hasDiscount = orig > 0 && orig !== cur;
     const effectivePrice = hasDiscount ? Math.min(orig, cur) : cur;
-    return sum + effectivePrice;
+    return sum + (effectivePrice * (item.quantity || 1));
   }, 0);
   const discountAmount = appliedPromo 
     ? (appliedPromo.type === 'percentage' ? subtotal * (appliedPromo.value / 100) : appliedPromo.value)
@@ -61,6 +61,7 @@ export default function CheckoutModal({ isOpen, onClose, dict, lang = 'en' }: Ch
     if (isOpen) {
       setSubmitted(false);
       setPaymentMethod('online');
+      setCopied(false);
       setPromoCodeInput('');
       setAppliedPromo(null);
       setPromoError('');
@@ -193,7 +194,10 @@ export default function CheckoutModal({ isOpen, onClose, dict, lang = 'en' }: Ch
                       {item.images?.[0] && <img src={item.images[0]} alt={localizedName} />}
                     </div>
                     <div className={styles.itemInfo}>
-                      <h4>{localizedName}</h4>
+                      <h4>
+                        {(item.quantity && item.quantity > 1) && <span style={{ color: '#4a603c', marginRight: '4px' }}>{item.quantity}×</span>}
+                        {localizedName}
+                      </h4>
                       <p className={styles.itemMeta}>
                         {item.selectedSize && `${dict.common.size || 'Size'}: ${item.selectedSize}`}
                         {item.selectedSize && item.selectedColor && ' · '}
@@ -208,10 +212,10 @@ export default function CheckoutModal({ isOpen, onClose, dict, lang = 'en' }: Ch
                       const displayOriginal = hasDiscount ? Math.max(orig, cur) : 0;
                       return (
                         <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                          <span className={styles.itemPrice}>{displayCurrent.toLocaleString()} ֏</span>
+                          <span className={styles.itemPrice}>{(displayCurrent * (item.quantity || 1)).toLocaleString()} ֏</span>
                           {hasDiscount && (
                             <div style={{ fontSize: '0.75rem', color: '#bbb', textDecoration: 'line-through' }}>
-                              {displayOriginal.toLocaleString()} ֏
+                              {(displayOriginal * (item.quantity || 1)).toLocaleString()} ֏
                             </div>
                           )}
                         </div>
