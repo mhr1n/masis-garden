@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useTickets } from '../../context/TicketsContext';
 import { useOrders } from '../../context/OrdersContext';
 
-const ADMIN_PASS = '123456';
+const ADMIN_PASS = 'MASISgarden374';
 
 export default function AdminAuth({ children }: { children: React.ReactNode }) {
   const [authed, setAuthed] = useState(false);
