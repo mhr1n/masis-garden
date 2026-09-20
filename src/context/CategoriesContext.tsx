@@ -15,6 +15,7 @@ export const defaultCategories: CategoryItem[] = [
   { id: 'moss', name: 'Moss Art', emoji: '🖼️', description: 'Zero-maintenance preserved moss wall art' },
   { id: 'decor', name: 'Decor', emoji: '✨', description: 'Botanical decor & accessories' },
   { id: 'gift', name: 'Gifts', emoji: '🎁', description: 'Curated plant gift sets & hampers' },
+  { id: 'lux', name: 'Lux', emoji: '👑', description: 'Premium & exclusive selections' },
 ];
 
 const STORAGE_KEY = 'ariel_categories_v1';
