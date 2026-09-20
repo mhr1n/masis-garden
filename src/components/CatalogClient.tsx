@@ -103,7 +103,7 @@ export default function CatalogClient({ dict, lang }: { dict: any; lang?: string
             className={`${categoryStyles.pill} ${filters.category === cat.id ? categoryStyles.pillActive : ''}`}
             onClick={() => handleCategorySelect(cat.id)}
           >
-            <img src={`/icons/categories/${cat.id}.png`} alt="" className={categoryStyles.icon} style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
+            <img src={`/icons/categories/${cat.id}.jpg`} alt="" className={categoryStyles.icon} style={{ width: '28px', height: '28px', objectFit: 'contain', borderRadius: '4px' }} />
             <span>{getCategoryName(cat)}</span>
           </button>
         ))}
